@@ -15,11 +15,12 @@ namespace IndicationNS
 
     static void loop(void)
     {
-        digitalToggle(PB14);
+        // digitalToggle(PB14);
+        digitalWrite(PB14, LOW);
 
         if (state == 0x03)
         {
-            digitalToggle(PB15);
+            digitalWrite(PB15, LOW);
         }
         else
         {

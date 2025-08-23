@@ -4,23 +4,19 @@ extern uint8_t count;
 
 namespace PulseNS
 {
-    // uint8_t speed{10};
+    void buttonPressed()
+    {
+        count++;
+    }
 
     static void init(void)
     {
-        // pinMode(PB1, OUTPUT);
-        // digitalWrite(PB1, LOW);
-
-        // pinMode(PB11, INPUT_PULLDOWN);
-        // pinMode(PB10, INPUT_PULLDOWN);
-
-        // pinMode(PA0, INPUT_PULLUP);
-
+        pinMode(PA0, INPUT_PULLUP);
+        attachInterrupt(PA0, buttonPressed, FALLING);
     }
 
     static void loop(void)
     {
-        // if (digitalRead(PA0) == LOW)// || digitalRead(PB10) == HIGH)
         // {
         //     count++;
         // }

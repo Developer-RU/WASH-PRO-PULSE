@@ -49,6 +49,8 @@ namespace RoutineNS
                         sending = 0;
                         repeat = 0;
                         timeout = 0;
+
+                        state = 0;
                     }
 
                     if (bytes_request == 0 && b == SenderNS::Control_NAK)
@@ -93,7 +95,6 @@ namespace RoutineNS
                         if (request[6] == SenderNS::Type_AutomatState)
                         {
                             automatState = (SenderNS::AutomatState)request[8];
-                            state = automatState;
                         }
                     }
                 }
@@ -124,6 +125,7 @@ namespace RoutineNS
             {
                 if (count > 0 && automatState == SenderNS::AutomatState_Ready)
                 {
+                    state = automatState;
                     commandLayer.cashPacket(count);
                 }
                 else
