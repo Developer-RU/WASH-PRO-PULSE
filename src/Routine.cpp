@@ -85,7 +85,7 @@ namespace RoutineNS
                 {
                     Serial.write(SenderNS::Control_ACK);
 
-                    if (request[5] == SenderNS::Operation_SetupResponse)
+                    if (request[5] == SenderNS::Operation_SetupResponse && request[8] == 0xFF)
                     {
                         automatState = SenderNS::AutomatState_NotReady;
                     }
