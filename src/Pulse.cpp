@@ -4,9 +4,13 @@ extern uint8_t count;
 
 namespace PulseNS
 {
+    unsigned long timerComplete = 0;
+    uint8_t newCount = 0;
+
     void buttonPressed()
     {
-        count++;
+        newCount++;
+        timerComplete = millis();
     }
 
     static void init(void)
@@ -17,16 +21,20 @@ namespace PulseNS
 
     static void loop(void)
     {
-        // {
-        //     count++;
-        // }
+        if(millis() > timerComplete + 100 && newCount > 0)
+        {
+            count = newCount;
+            newCount = 0;
+        }
 
-        vTaskDelay(2);
+        vTaskDelay(100);
     }
 
     void TaskPulse(void *pvParameters __attribute__((unused)))
     {
         init();
+
+        timerComplete = millis();
 
         for (;;)
         {
