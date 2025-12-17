@@ -1,0 +1,681 @@
+{
+  "uuid": "d26ebe77ef8a1d163923cad35b04d57e",
+  "path": "Offline/PULSE-CONVERTER",
+  "name": "PULSE-CONVERTER",
+  "content": "",
+  "created_at": "2025-03-14 22:09:28",
+  "updated_at": "2025-12-17 23:26:20",
+  "stick": "",
+  "documents": [
+    {
+      "uuid": "f9bfda5812b960109d9f8c60642547e5",
+      "title": "Sheet_1",
+      "description": "",
+      "docType": "1",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "bc5bae067dc045cca8bd4c83186a99fb": 1,
+        "f996aa3daccc4f79899994ba203e2b54": 4,
+        "16b1ce4a0d114e2ba4b1478902dfa3f4": 1,
+        "ca77f6d9612b46be9919ebc5bc2797e4": 1,
+        "159f4cde3ca844a582cf0699703df400": 1,
+        "5e09234003244ade93d0e442422ff56b": 2,
+        "59a4e0f9675041afb3939a1013155fdf": 1,
+        "bc732e07dbb44700843bf6a0fa3f020a": 1,
+        "397c106b94e344ee9c710f4e808bb4a5": 1
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "100nF",
+          6,
+          "C0805",
+          "C1,C2,C3,C4,C6,C7",
+          {
+            "Manufacturer Part": "CL21B104KACNFNC",
+            "Manufacturer": "SAMSUNG(三星)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C913935"
+          }
+        ],
+        [
+          "10uF",
+          1,
+          "C0805",
+          "C5",
+          {
+            "Manufacturer Part": "CGA4J1X7R0J106M125AD",
+            "Manufacturer": "TDK",
+            "Supplier": "LCSC",
+            "Supplier Part": "C3840859"
+          }
+        ],
+        [
+          "22nF",
+          1,
+          "C0603",
+          "C8",
+          {
+            "Manufacturer Part": "C1608X7R2A223K080AE",
+            "Manufacturer": "TDK",
+            "Supplier": "LCSC",
+            "Supplier Part": "C3843204"
+          }
+        ],
+        [
+          "12pF",
+          4,
+          "C0603",
+          "C9,C10,C11,C12",
+          {
+            "Manufacturer Part": "C1608NP01H120J080AA",
+            "Manufacturer": "TDK",
+            "Supplier": "LCSC",
+            "Supplier Part": "C3866562"
+          }
+        ],
+        [
+          "2.54-4P ZZDK-H",
+          1,
+          "CONN-TH_2.54-4P-ZZDK-H",
+          "CN1",
+          {
+            "Manufacturer Part": "2.54-4P ZZDK-H",
+            "Manufacturer": "SHOU HAN(首韩)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C49023800"
+          }
+        ],
+        [
+          "2.54-2*3",
+          1,
+          "HDR-TH_6P-P2.54-V-R2-C3-S2.54_A2541WV-2X3P",
+          "H1",
+          {
+            "Manufacturer Part": "2.54-2*3",
+            "Manufacturer": "ZHOURI(洲日)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C5116479"
+          }
+        ],
+        [
+          "19-217/BHC-XL2M2TY/3T",
+          2,
+          "LED0603-R-RD",
+          "LED1,LED2",
+          {
+            "Manufacturer Part": "19-217/BHC-XL2M2TY/3T",
+            "Manufacturer": "Everlight Elec",
+            "Supplier": "LCSC",
+            "Supplier Part": "C264464"
+          }
+        ],
+        [
+          "100kΩ",
+          2,
+          "R0603",
+          "R1,R2",
+          {
+            "Manufacturer Part": "RHS-03K1003FT",
+            "Manufacturer": "FH(风华)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C5355232"
+          }
+        ],
+        [
+          "470",
+          3,
+          "R0603",
+          "R3,R4,R12",
+          {
+            "Manufacturer Part": "RC0603JR-07470RL",
+            "Manufacturer": "YAGEO",
+            "Supplier": "LCSC",
+            "Supplier Part": "C114433"
+          }
+        ],
+        [
+          "220",
+          2,
+          "R0603",
+          "R5,R6",
+          {
+            "Manufacturer Part": "MCR03ERTF1241",
+            "Manufacturer": "ROHM Semicon",
+            "Supplier": "LCSC",
+            "Supplier Part": "C308035"
+          }
+        ],
+        [
+          "2.7K",
+          5,
+          "R0603",
+          "R7,R8,R9,R10,R11",
+          {
+            "Manufacturer Part": "MCR03ERTF1241",
+            "Manufacturer": "ROHM Semicon",
+            "Supplier": "LCSC",
+            "Supplier Part": "C308035"
+          }
+        ],
+        [
+          "BCR512",
+          2,
+          "SOT23-R_INFINEON",
+          "T1,T2",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "MAX3232ECM/TR",
+          1,
+          "SOP-16_L9.9-W3.9-P1.27-LS6.1-BL",
+          "U1",
+          {
+            "Manufacturer Part": "MAX3232ECM/TR",
+            "Manufacturer": "HGSEMI(华冠)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C5310894"
+          }
+        ],
+        [
+          "618009211821",
+          1,
+          "DB9-TH_DB9F",
+          "U2",
+          {
+            "Manufacturer Part": "618009211821",
+            "Manufacturer": "Wurth(伍尔特)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C17538281"
+          }
+        ],
+        [
+          "RT9193-33",
+          1,
+          "SOT-23-5_L2.9-W1.6-P0.95-LS2.8-BL",
+          "U3",
+          {
+            "Manufacturer Part": "RT9193-33",
+            "Manufacturer": "null",
+            "Supplier": "LCSC",
+            "Supplier Part": "C9900015455"
+          }
+        ],
+        [
+          "1uF",
+          1,
+          "C0805",
+          "U4",
+          {
+            "Manufacturer Part": "C2012X5R1C105M085AA",
+            "Manufacturer": "TDK",
+            "Supplier": "LCSC",
+            "Supplier Part": "C3875014"
+          }
+        ],
+        [
+          "STM32F103C8T6-YJLTY",
+          1,
+          "QFP-48_L7.0-W7.0-P0.50-LS9.0-BL",
+          "U5",
+          {
+            "Manufacturer Part": "STM32F103C8T6-YJLTY",
+            "Manufacturer": "null",
+            "Supplier": "LCSC",
+            "Supplier Part": "C2911485"
+          }
+        ],
+        [
+          "PC817X3YIPW",
+          1,
+          "OPTO-SMD-4_L6.5-W4.6-P2.54-LS10.0-TL",
+          "U6",
+          {
+            "Manufacturer Part": "PC817X3YIPW",
+            "Manufacturer": "SHARP(夏普)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C2833077"
+          }
+        ],
+        [
+          "32.768kHz",
+          1,
+          "CRYSTAL-SMD_L8.0-W3.2-P5.50-LS3.8-BL",
+          "X1",
+          {
+            "Manufacturer Part": "XKZEL89CII-112YLC-32.768K",
+            "Manufacturer": "YXC(扬兴晶振)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C18214298"
+          }
+        ],
+        [
+          "8MHz",
+          1,
+          "OSC-SMD_4P-L3.2-W2.5-BL-OXETDLJANF-0.032768MHZ",
+          "X2",
+          {
+            "Manufacturer Part": "7U08000E10UCG",
+            "Manufacturer": "SJK(晶科鑫)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C524714"
+          }
+        ],
+        [
+          "XY2500V-E-3.81-4P",
+          1,
+          "CONN-TH_XY2500V-E-3.81-4P",
+          "XS1",
+          {
+            "Manufacturer Part": "XY2500V-E-3.81-4P",
+            "Manufacturer": "XINLAIYA(新莱亚)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C880565"
+          }
+        ]
+      ],
+      "updateTime": 1765995730,
+      "createTime": 1741972168,
+      "histories": [],
+      "created_at": "2025-03-14 22:09:28",
+      "updated_at": "2025-12-17 23:22:10"
+    },
+    {
+      "uuid": "1c84072fad1d7ac1a2f69d6a9411fd67",
+      "title": "Sheet_2",
+      "description": "",
+      "docType": "1",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "67defc64e0434089bd2e43f0bae3b5fc": 4,
+        "7a057cd4456e4725b050f5eb51146f43": 1,
+        "ffba7abfed624488bf028b03dccd4e5d": 1,
+        "fb9aa46860a848019c187ac680b0f19c": 1,
+        "fb2fe7df62fd43929d3e76bef5979a7a": 2,
+        "f7a469a435b94b2e8966b77781f75259": 3,
+        "64911ddf8be046cc9a239c67e2cc8939": 1,
+        "9a6a0ba9d6bf42b482feb391e1b11bc3": 2,
+        "745b9c54aef141b09d91b3a3dc5fa5f0": 1,
+        "ed2ad98be13844929190c04baa86c831": 3,
+        "2f7248ddc3504dbe92acb6cade4ae9bc": 2,
+        "a8f41bdc8442486881980dcc3e73f87c": 1
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "100nF",
+          6,
+          "C0805",
+          "C1,C2,C3,C4,C6,C7",
+          {
+            "Manufacturer Part": "CL21B104KACNFNC",
+            "Manufacturer": "SAMSUNG(三星)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C913935"
+          }
+        ],
+        [
+          "10uF",
+          1,
+          "C0805",
+          "C5",
+          {
+            "Manufacturer Part": "CGA4J1X7R0J106M125AD",
+            "Manufacturer": "TDK",
+            "Supplier": "LCSC",
+            "Supplier Part": "C3840859"
+          }
+        ],
+        [
+          "22nF",
+          1,
+          "C0603",
+          "C8",
+          {
+            "Manufacturer Part": "C1608X7R2A223K080AE",
+            "Manufacturer": "TDK",
+            "Supplier": "LCSC",
+            "Supplier Part": "C3843204"
+          }
+        ],
+        [
+          "12pF",
+          4,
+          "C0603",
+          "C9,C10,C11,C12",
+          {
+            "Manufacturer Part": "C1608NP01H120J080AA",
+            "Manufacturer": "TDK",
+            "Supplier": "LCSC",
+            "Supplier Part": "C3866562"
+          }
+        ],
+        [
+          "2.54-4P ZZDK-H",
+          1,
+          "CONN-TH_2.54-4P-ZZDK-H",
+          "CN1",
+          {
+            "Manufacturer Part": "2.54-4P ZZDK-H",
+            "Manufacturer": "SHOU HAN(首韩)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C49023800"
+          }
+        ],
+        [
+          "2.54-2*3",
+          1,
+          "HDR-TH_6P-P2.54-V-R2-C3-S2.54_A2541WV-2X3P",
+          "H1",
+          {
+            "Manufacturer Part": "2.54-2*3",
+            "Manufacturer": "ZHOURI(洲日)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C5116479"
+          }
+        ],
+        [
+          "19-217/BHC-XL2M2TY/3T",
+          2,
+          "LED0603-R-RD",
+          "LED1,LED2",
+          {
+            "Manufacturer Part": "19-217/BHC-XL2M2TY/3T",
+            "Manufacturer": "Everlight Elec",
+            "Supplier": "LCSC",
+            "Supplier Part": "C264464"
+          }
+        ],
+        [
+          "100kΩ",
+          2,
+          "R0603",
+          "R1,R2",
+          {
+            "Manufacturer Part": "RHS-03K1003FT",
+            "Manufacturer": "FH(风华)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C5355232"
+          }
+        ],
+        [
+          "470",
+          3,
+          "R0603",
+          "R3,R4,R12",
+          {
+            "Manufacturer Part": "RC0603JR-07470RL",
+            "Manufacturer": "YAGEO",
+            "Supplier": "LCSC",
+            "Supplier Part": "C114433"
+          }
+        ],
+        [
+          "2.7K",
+          3,
+          "R0603",
+          "R7,R8,R11",
+          {
+            "Manufacturer Part": "MCR03ERTF1241",
+            "Manufacturer": "ROHM Semicon",
+            "Supplier": "LCSC",
+            "Supplier Part": "C308035"
+          }
+        ],
+        [
+          "BCR512",
+          2,
+          "SOT23-R_INFINEON",
+          "T1,T2",
+          {
+            "Manufacturer Part": "",
+            "Manufacturer": "",
+            "Supplier": "",
+            "Supplier Part": ""
+          }
+        ],
+        [
+          "MAX3232ECM/TR",
+          1,
+          "SOP-16_L9.9-W3.9-P1.27-LS6.1-BL",
+          "U1",
+          {
+            "Manufacturer Part": "MAX3232ECM/TR",
+            "Manufacturer": "HGSEMI(华冠)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C5310894"
+          }
+        ],
+        [
+          "618009211821",
+          1,
+          "DB9-TH_DB9F",
+          "U2",
+          {
+            "Manufacturer Part": "618009211821",
+            "Manufacturer": "Wurth(伍尔特)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C17538281"
+          }
+        ],
+        [
+          "RT9193-33",
+          1,
+          "SOT-23-5_L2.9-W1.6-P0.95-LS2.8-BL",
+          "U3",
+          {
+            "Manufacturer Part": "RT9193-33",
+            "Manufacturer": "null",
+            "Supplier": "LCSC",
+            "Supplier Part": "C9900015455"
+          }
+        ],
+        [
+          "1uF",
+          1,
+          "C0805",
+          "U4",
+          {
+            "Manufacturer Part": "C2012X5R1C105M085AA",
+            "Manufacturer": "TDK",
+            "Supplier": "LCSC",
+            "Supplier Part": "C3875014"
+          }
+        ],
+        [
+          "STM32F103C8T6-YJLTY",
+          1,
+          "QFP-48_L7.0-W7.0-P0.50-LS9.0-BL",
+          "U5",
+          {
+            "Manufacturer Part": "STM32F103C8T6-YJLTY",
+            "Manufacturer": "null",
+            "Supplier": "LCSC",
+            "Supplier Part": "C2911485"
+          }
+        ],
+        [
+          "PC817X3YIPW",
+          1,
+          "OPTO-SMD-4_L6.5-W4.6-P2.54-LS10.0-TL",
+          "U6",
+          {
+            "Manufacturer Part": "PC817X3YIPW",
+            "Manufacturer": "SHARP(夏普)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C2833077"
+          }
+        ],
+        [
+          "32.768kHz",
+          1,
+          "CRYSTAL-SMD_L8.0-W3.2-P5.50-LS3.8-BL",
+          "X1",
+          {
+            "Manufacturer Part": "XKZEL89CII-112YLC-32.768K",
+            "Manufacturer": "YXC(扬兴晶振)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C18214298"
+          }
+        ],
+        [
+          "8MHz",
+          1,
+          "OSC-SMD_4P-L3.2-W2.5-BL-OXETDLJANF-0.032768MHZ",
+          "X2",
+          {
+            "Manufacturer Part": "7U08000E10UCG",
+            "Manufacturer": "SJK(晶科鑫)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C524714"
+          }
+        ],
+        [
+          "XY2500V-E-3.81-4P",
+          1,
+          "CONN-TH_XY2500V-E-3.81-4P",
+          "XS1",
+          {
+            "Manufacturer Part": "XY2500V-E-3.81-4P",
+            "Manufacturer": "XINLAIYA(新莱亚)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C880565"
+          }
+        ]
+      ],
+      "updateTime": 1765995980,
+      "createTime": 1765992836,
+      "histories": [],
+      "created_at": "2025-12-17 22:33:56",
+      "updated_at": "2025-12-17 23:26:20"
+    },
+    {
+      "uuid": "665e54198eb427ed8f14d5ffae3c4252",
+      "puuid": "d26ebe77ef8a1d163923cad35b04d57e",
+      "title": "PCB_PULSE-CONVERTER",
+      "filename": "PCB_PULSE-CONVERTER.json",
+      "description": "",
+      "docType": "3",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "edb6f54ab5564ab8bd49b803d782cf71": 1,
+        "1dbbaa396a2f40e5b61a9d4662872447": 1,
+        "72ec21d30aea46f1ab3ebe9075a52b99": 1,
+        "f8151fdc728a41ebbc304e11d39e5437": 7,
+        "50dc3b6111d549ddb6686d77ab1ebdd8": 2,
+        "398691f1f785460098bbe5ee6590333c": 12,
+        "754a17c2e50248c4a0395b0c335aa12a": 2,
+        "db322e186f3e4a33b552f3526afdbbe7": 1,
+        "2ee8eb13a0124a108e622ce40c0c25a8": 6,
+        "984c87235f0a47b4acc44577aa20fd57": 1,
+        "82dc0bb42e6440dca9b666a7b0ad6e11": 1,
+        "ee08a25d808048f581cb03b9792e78a0": 1,
+        "ad0b338261f346319ea1a944c64bc75b": 1,
+        "feaaf4318a02493992eab01fd4e5c363": 1,
+        "18221cdac22546d19da3813b3a6aa286": 1
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "22",
+          2,
+          "C0805",
+          "C17,C18",
+          {
+            "Manufacturer Part": "CL21B104KACNFNC",
+            "Manufacturer": "SAMSUNG(三星)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C913935"
+          }
+        ],
+        [
+          "HDR-IDC-2.54-2X3P",
+          1,
+          "IDC-TH_6P-P2.54_C11214",
+          "P1",
+          {
+            "Manufacturer Part": "2X3 2.54mm IDC Box",
+            "Manufacturer": "BOOMELE",
+            "Supplier": "LCSC",
+            "Supplier Part": "C11214"
+          }
+        ],
+        [
+          "16MHz",
+          1,
+          "CRYSTAL-SMD_4P-L3.2-W2.5-BL",
+          "QH1",
+          {
+            "Manufacturer Part": "X3S016000DC1H-V",
+            "Manufacturer": "Harmony Elec",
+            "Supplier": "LCSC",
+            "Supplier Part": "C254368"
+          }
+        ],
+        [
+          "4.7K",
+          1,
+          "R0805",
+          "R39",
+          {
+            "Manufacturer Part": "ERJP06F22R0V",
+            "Manufacturer": "PANASONIC(松下)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C441970"
+          }
+        ],
+        [
+          "ATMEGA328-AU",
+          1,
+          "TQFP-32_L7.0-W7.0-P0.80-LS9.0-BL",
+          "U13",
+          {
+            "Manufacturer Part": "ATMEGA328-AU",
+            "Manufacturer": "MICROCHIP(美国微芯)",
+            "Supplier": "LCSC",
+            "Supplier Part": "C618731"
+          }
+        ]
+      ],
+      "updateTime": 1765995868,
+      "createTime": 1741973272,
+      "histories": [],
+      "created_at": "2025-03-14 22:27:52",
+      "updated_at": "2025-12-17 23:24:28"
+    }
+  ],
+  "sort": [
+    "f9bfda5812b960109d9f8c60642547e5",
+    "1c84072fad1d7ac1a2f69d6a9411fd67"
+  ],
+  "title": "PULSE-CONVERTER",
+  "foldername": "PULSE-CONVERTER",
+  "schfilename": "PULSE-CONVERTER.json",
+  "schfilemtime": 1765995980051
+}
