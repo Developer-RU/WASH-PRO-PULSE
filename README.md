@@ -1,6 +1,6 @@
 <p align="left">
-  <img src="images/version.svg" alt="version">
-  <img src="images/license.svg" alt="license">
+  <img src="/images/version.svg" alt="version">
+  <img src="/images/license.svg" alt="license">
 </p>
 
 # WASH-PRO-PULSE
