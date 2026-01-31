@@ -1,3 +1,8 @@
+<p align="left">
+  <img src="images/version.svg" alt="version">
+  <img src="images/license.svg" alt="license">
+</p>
+
 # WASH-PRO-PULSE
 
 This project is a pulse converter based on the **STM32F103C8T6** microcontroller. The device is designed to read credit pulses from cashless payment (acquiring) terminals and transmit data to an equipment controller, such as a self-service car wash.
