@@ -1,7 +1,5 @@
 #include "Main.hpp"
 
-extern uint8_t money;
-
 void setup()
 {
   delay(500);
