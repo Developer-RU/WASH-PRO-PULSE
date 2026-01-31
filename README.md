@@ -1,45 +1,45 @@
 # WASH-PRO-PULSE
 
-Проект представляет собой конвертер импульсов (pulse converter) на базе микроконтроллера **STM32F103C8T6**. Устройство предназначено для считывания кредитных импульсов с терминалов безналичной оплаты (эквайринга) и передачи данных на контроллер оборудования, например, на автомойке самообслуживания.
+This project is a pulse converter based on the **STM32F103C8T6** microcontroller. The device is designed to read credit pulses from cashless payment (acquiring) terminals and transmit data to an equipment controller, such as a self-service car wash.
 
-Код протестирован и применяется для подключения к контроллеру автомойки самообслуживания **WASH-PRO**.
+The code has been tested and is used for connecting to the **WASH-PRO** self-service car wash controller.
 
-## Назначение и функциональность
+## Purpose and Functionality
 
-Основная задача устройства — интеграция современных платежных систем с оборудованием, управляемым по импульсному или проприетарному протоколу.
+The main purpose of the device is to integrate modern payment systems with equipment controlled by pulse or proprietary protocols.
 
-**Ключевые функции:**
+**Key Features:**
 
-1.  **Считывание импульсов:** Устройство настроено на считывание импульсов с логическими уровнями 3.3V от терминалов эквайринга, таких как **Vendista** и **Vendotek**. Для этого используется аппаратное прерывание на пине `PA0`.
+1.  **Pulse Reading:** The device is configured to read pulses with 3.3V logic levels from acquiring terminals like **Vendista** and **Vendotek**. It uses a hardware interrupt on pin `PA0` for this purpose.
 
-2.  **Ручное добавление кредитов:** Реализована возможность добавления кредитов вручную с помощью двух кнопок:
-    *   Кнопка на `PB12`: добавляет 10 кредитов.
-    *   Кнопка на `PB13`: добавляет 50 кредитов.
+2.  **Manual Credit Addition:** It's possible to add credits manually using two buttons:
+    *   Button on `PB12`: adds 10 credits.
+    *   Button on `PB13`: adds 50 credits.
 
-3.  **Обмен данными:** Устройство общается с главным контроллером (например, WASH-PRO) по протоколу, частично повторяющему **"Эфор Онлайн"**, через UART (`PA9`/`PA10`). Оно отправляет пакеты с информацией о состоянии и количестве полученных кредитов.
+3.  **Data Exchange:** The device communicates with the main controller (e.g., WASH-PRO) via UART (`PA9`/`PA10`) using a protocol that partially mimics **"Efor Online"**. It sends packets with status information and the number of received credits.
 
-4.  **Индикация состояния:** Два светодиода на пинах `PB14` и `PB15` используются для визуальной индикации работы и состояния устройства.
+4.  **Status Indication:** Two LEDs on pins `PB14` and `PB15` are used for visual feedback on the device's operation and status.
 
-## Архитектура ПО
+## Software Architecture
 
-Прошивка написана с использованием **FreeRTOS**, что обеспечивает параллельное выполнение нескольких задач:
+The firmware is written using **FreeRTOS**, which allows for the parallel execution of several tasks:
 
-*   `TaskPulse`: Обработка входящих импульсов от платежного терминала.
-*   `TaskButton`: Обработка нажатий кнопок для ручного добавления кредитов.
-*   `TaskRoutine`: Управление основной логикой, состоянием и обменом данными с главным контроллером по UART.
-*   `TaskIndication`: Управление светодиодной индикацией.
+*   `TaskPulse`: Handles incoming pulses from the payment terminal.
+*   `TaskButton`: Processes button presses for manual credit addition.
+*   `TaskRoutine`: Manages the main logic, state, and data exchange with the main controller via UART.
+*   `TaskIndication`: Controls the LED indicators.
 
-Такая многозадачная архитектура обеспечивает отзывчивость и надежность системы.
+This multitasking architecture ensures system responsiveness and reliability.
 
-## Аппаратная часть
+## Hardware
 
-*   **Микроконтроллер:** STM32F103C8T6 ("Blue Pill").
+*   **Microcontroller:** STM32F103C8T6 ("Blue Pill").
 *   **Интерфейсы:**
-    *   `PA0`: Вход для импульсов от терминала эквайринга (INPUT_PULLUP).
-    *   `PB12`, `PB13`: Входы для кнопок (INPUT_PULLUP).
-    *   `PA9` (TX), `PA10` (RX): UART для связи с главным контроллером.
-    *   `PB14`, `PB15`: Выходы для светодиодной индикации.
+    *   `PA0`: Input for pulses from the acquiring terminal (INPUT_PULLUP).
+    *   `PB12`, `PB13`: Inputs for buttons (INPUT_PULLUP).
+    *   `PA9` (TX), `PA10` (RX): UART for communication with the main controller.
+    *   `PB14`, `PB15`: Outputs for LED indication.
 
-## Потенциальное применение
+## Potential Applications
 
-Хотя проект изначально создавался для автомоек WASH-PRO, его архитектура позволяет адаптировать его для использования с другими устройствами и системами, где требуется преобразование импульсных сигналов в данные для управляющего контроллера.
+Although this project was initially created for WASH-PRO car washes, its architecture allows it to be adapted for use with other devices and systems that require converting pulse signals into data for a master controller.

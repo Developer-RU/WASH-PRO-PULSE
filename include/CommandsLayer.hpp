@@ -1,13 +1,20 @@
+/**
+ * @file CommandsLayer.hpp
+ * @author Masyukov Pavel
+ * @brief Header for the CommandLayer class and protocol definitions.
+ * @version 1.0.0
+ * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ */
 #pragma once
 
 #include "Global.hpp"
 #include "PacketLayer.hpp"
 
-#define PACKET_SIZE 512
+#define PACKET_SIZE 512 ///< Defines the maximum size of a communication packet.
 
 namespace SenderNS
 {
-   enum Control 
+   enum Control
     {
         Control_START	 		= 0x01,
         Control_ACK		 		= 0x06,
@@ -66,6 +73,7 @@ namespace SenderNS
         AutomatState_Error 		= 0x10,
     };
 
+    /** @brief Builds the data payload for different command types. */
     class CommandLayer
     {
         public:

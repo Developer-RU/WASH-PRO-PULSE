@@ -1,3 +1,10 @@
+/**
+ * @file PacketLayer.hpp
+ * @author Masyukov Pavel
+ * @brief Header for the PacketLayer class, which handles low-level packet construction and sending.
+ * @version 1.0.0
+ * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ */
 #pragma once
 
 #include "Global.hpp"
@@ -5,6 +12,7 @@
 
 namespace SenderNS
 {
+    /** @brief Handles the framing and sending of data packets over UART. */
     class PacketLayer
     {
 

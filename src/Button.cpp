@@ -1,10 +1,17 @@
+/**
+ * @file Button.cpp
+ * @author Masyukov Pavel
+ * @brief Implementation of the module for handling manual credit buttons.
+ * @version 1.0.0
+ * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ */
 #include "Button.hpp"
 
 extern uint8_t count;
 
 namespace ButtonNS
 {
-  uint8_t state10{0}, state50{0};
+  uint8_t state10{0}, state50{0}; // State flags to prevent continuous incrementing while a button is held down.
   uint8_t flag10{0}, flag50{0};
 
   static void init(void)

@@ -1,3 +1,10 @@
+/**
+ * @file PacketLayer.cpp
+ * @author Masyukov Pavel
+ * @brief Implementation of the PacketLayer class for sending framed data.
+ * @version 1.0.0
+ * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ */
 #include "PacketLayer.hpp"
 
 namespace SenderNS

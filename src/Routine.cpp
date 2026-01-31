@@ -1,3 +1,10 @@
+/**
+ * @file Routine.cpp
+ * @author Masyukov Pavel
+ * @brief Implementation of the main routine task, handling communication with the master controller.
+ * @version 1.0.0
+ * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ */
 #include "Routine.hpp"
 
 extern uint8_t count;

@@ -1,3 +1,10 @@
+/**
+ * @file Main.hpp
+ * @author Masyukov Pavel
+ * @brief Main header file for the project. Declares main functions and includes all modules.
+ * @version 1.0.0
+ * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ */
 #pragma once
 
 #include "Global.hpp"
@@ -27,6 +34,12 @@
 // #include "Totals.hpp"
 // #include "Remote.hpp"
 // #include "Routine.hpp"
-
+/**
+ * @brief Setup function. Initializes FreeRTOS tasks.
+ */
 void setup(void);
+
+/**
+ * @brief Main loop. Not used in this project as all logic is handled by FreeRTOS tasks.
+ */
 void loop(void);

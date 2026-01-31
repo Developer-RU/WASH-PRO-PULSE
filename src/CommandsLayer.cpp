@@ -1,3 +1,10 @@
+/**
+ * @file CommandsLayer.cpp
+ * @author Masyukov Pavel
+ * @brief Implementation of the CommandLayer class for building specific command packets.
+ * @version 1.0.0
+ * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ */
 #include "CommandsLayer.hpp"
 
 namespace SenderNS

@@ -1,3 +1,10 @@
+/**
+ * @file Indication.cpp
+ * @author Masyukov Pavel
+ * @brief Implementation of the module for status LED indication.
+ * @version 1.0.0
+ * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ */
 #include "Indication.hpp"
 
 extern uint8_t state;
