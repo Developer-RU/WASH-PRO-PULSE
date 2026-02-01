@@ -21,7 +21,7 @@ The main purpose of the device is to integrate modern payment systems with equip
     *   Button on `PB12`: adds 10 credits.
     *   Button on `PB13`: adds 50 credits.
 
-3.  **Data Exchange:** The device communicates with the main controller (e.g., WASH-PRO) via UART (`PA9`/`PA10`) using a protocol that partially mimics the **"Efor Online"** protocol. It sends packets with status information and the number of received credits.
+3.  **Data Exchange:** The device communicates with the main controller (e.g., WASH-PRO) via UART (`PA9`/`PA10`) using a protocol that partially mimics the **"Ephor Online"** protocol. It sends packets with status information and the number of received credits.
 
 4.  **Status Indication:** Two LEDs on pins `PB14` and `PB15` are used for visual feedback on the device's operation and status.
 
