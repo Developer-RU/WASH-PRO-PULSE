@@ -35,6 +35,21 @@ const uint8_t CREDIT_VALUE_BUTTON_2 = 50;         ///< Credits added by the seco
 // --- State Machine ---
 const uint8_t STATE_RESET = 0;                    ///< A neutral state, used to reset after a transaction.
 
+// === Pin Definitions ===
+
+// --- Communication ---
+const auto UART_TX_PIN = PA9;
+const auto UART_RX_PIN = PA10;
+
+// --- Inputs ---
+const auto PULSE_INPUT_PIN = PA0;
+const auto BUTTON_10_PIN = PB12;
+const auto BUTTON_50_PIN = PB13;
+
+// --- Outputs ---
+const auto LED_HEARTBEAT_PIN = PB14;
+const auto LED_STATUS_PIN = PB15;
+
 // === Communication Protocol ===
 
 /**

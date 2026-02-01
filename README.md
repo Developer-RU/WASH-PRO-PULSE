@@ -38,13 +38,12 @@ This multitasking architecture ensures system responsiveness and reliability.
 
 ## Hardware
 
-*   **Microcontroller:** STM32F103C8T6 ("Blue Pill").
-*   **Интерфейсы:**
-*   **Interfaces:**
-    *   `PA0`: Input for pulses from the acquiring terminal (INPUT_PULLUP).
-    *   `PB12`, `PB13`: Inputs for buttons (INPUT_PULLUP).
-    *   `PA9` (TX), `PA10` (RX): UART for communication with the main controller.
-    *   `PB14`, `PB15`: Outputs for LED indication.
+*   **Microcontroller:** STM32F103C8T6 ("Blue Pill")
+*   **Pin Configuration:** All pin assignments are defined in `include/Constants.hpp`.
+    *   `PULSE_INPUT_PIN`: Input for pulses from the acquiring terminal.
+    *   `BUTTON_10_PIN`, `BUTTON_50_PIN`: Inputs for manual credit buttons.
+    *   `UART_TX_PIN`, `UART_RX_PIN`: UART for communication with the main controller.
+    *   `LED_HEARTBEAT_PIN`, `LED_STATUS_PIN`: Outputs for LED indication.
 
 ## Potential Applications
 

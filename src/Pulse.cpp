@@ -17,7 +17,7 @@ namespace PulseNS
     /**
      * @brief Interrupt Service Routine (ISR) for pin PA0.
      * 
-     * Triggers on the falling edge of the signal.
+     * Triggers on the falling edge of the signal from the pulse input pin.
      * Increments the `newCount` counter and updates the `timerComplete` timer.
      */
     void buttonPressed()
@@ -34,8 +34,8 @@ namespace PulseNS
      */
     static void init(void)
     {
-        pinMode(PA0, INPUT_PULLUP); // Configure PA0 as an input with a pull-up resistor.
-        attachInterrupt(PA0, buttonPressed, FALLING);
+        pinMode(PULSE_INPUT_PIN, INPUT_PULLUP); // Configure the pulse pin as an input with a pull-up resistor.
+        attachInterrupt(PULSE_INPUT_PIN, buttonPressed, FALLING);
     }
 
     /**

@@ -21,8 +21,8 @@ namespace ButtonNS
    */
   static void init(void)
   {
-    pinMode(PB12, INPUT_PULLUP);
-    pinMode(PB13, INPUT_PULLUP);
+    pinMode(BUTTON_10_PIN, INPUT_PULLUP);
+    pinMode(BUTTON_50_PIN, INPUT_PULLUP);
   }
 
   /**
@@ -33,11 +33,11 @@ namespace ButtonNS
    */
   static void loop(void)
   {
-    if (digitalRead(PB12) == LOW && flag10 == 0)
+    if (digitalRead(BUTTON_10_PIN) == LOW && flag10 == 0)
     {
       flag10 = 1;
     }
-    else if (digitalRead(PB12) == LOW && flag10 == 1)
+    else if (digitalRead(BUTTON_10_PIN) == LOW && flag10 == 1)
     {
       if (state10 == 0)
       {
@@ -45,18 +45,18 @@ namespace ButtonNS
         count += CREDIT_VALUE_BUTTON_1;
       }
     }
-    else if (digitalRead(PB12) == HIGH && flag10 == 1)
+    else if (digitalRead(BUTTON_10_PIN) == HIGH && flag10 == 1)
     {
       state10 = 0;
       flag10 = 0;
     }
 
     // --- Button for 50 credits ---
-    if (digitalRead(PB13) == LOW && flag50 == 0)
+    if (digitalRead(BUTTON_50_PIN) == LOW && flag50 == 0)
     {
       flag50 = 1;
     }
-    else if (digitalRead(PB13) == LOW && flag50 == 1)
+    else if (digitalRead(BUTTON_50_PIN) == LOW && flag50 == 1)
     {
       if (state50 == 0)
       {
@@ -64,7 +64,7 @@ namespace ButtonNS
         count += CREDIT_VALUE_BUTTON_2;
       }
     }
-    else if (digitalRead(PB13) == HIGH && flag50 == 1)
+    else if (digitalRead(BUTTON_50_PIN) == HIGH && flag50 == 1)
     {
       state50 = 0;
       flag50 = 0;

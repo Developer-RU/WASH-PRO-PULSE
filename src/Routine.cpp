@@ -36,8 +36,8 @@ namespace RoutineNS
         automatState = SenderNS::AutomatState_Init;
         state = automatState;
 
-        Serial.setRx(PA10);
-        Serial.setTx(PA9);
+        Serial.setRx(UART_RX_PIN);
+        Serial.setTx(UART_TX_PIN);
 
         Serial.begin(115200);
     }

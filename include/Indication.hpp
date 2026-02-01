@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Global.hpp"
+#include "CommandsLayer.hpp"
 
 /**
  * @namespace IndicationNS
