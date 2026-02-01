@@ -1,18 +1,17 @@
-
-<p>
-  <img src="/images/version.svg" alt="Version 0.0.0">
-  <img src="/images/license.svg" alt="License MIT">
+<p align="left">
+  <img src="/images/version.svg" alt="version">
+  <img src="/images/license.svg" alt="license">
 </p>
 
 # WASH-PRO-PULSE
 
-This project is a pulse converter based on the **STM32F103C8T6** microcontroller. The device is designed to read credit pulses from cashless payment (acquiring) terminals and transmit data to an equipment controller, such as a self-service car wash.
+This project is a pulse converter based on the **STM32F103C8T6** microcontroller. The device is designed to read credit pulses from cashless payment (acquiring) terminals and transmit data to an equipment controller, such as a self-service car wash controller.
 
 The code has been tested and is used for connecting to the **WASH-PRO** self-service car wash controller.
 
 ## Purpose and Functionality
 
-The main purpose of the device is to integrate modern payment systems with equipment controlled by pulse or proprietary protocols.
+The main purpose of the device is to integrate modern payment systems with equipment that is controlled by pulses or proprietary protocols.
 
 **Key Features:**
 
@@ -22,7 +21,7 @@ The main purpose of the device is to integrate modern payment systems with equip
     *   Button on `PB12`: adds 10 credits.
     *   Button on `PB13`: adds 50 credits.
 
-3.  **Data Exchange:** The device communicates with the main controller (e.g., WASH-PRO) via UART (`PA9`/`PA10`) using a protocol that partially mimics **"Efor Online"**. It sends packets with status information and the number of received credits.
+3.  **Data Exchange:** The device communicates with the main controller (e.g., WASH-PRO) via UART (`PA9`/`PA10`) using a protocol that partially mimics the **"Efor Online"** protocol. It sends packets with status information and the number of received credits.
 
 4.  **Status Indication:** Two LEDs on pins `PB14` and `PB15` are used for visual feedback on the device's operation and status.
 
@@ -41,6 +40,7 @@ This multitasking architecture ensures system responsiveness and reliability.
 
 *   **Microcontroller:** STM32F103C8T6 ("Blue Pill").
 *   **Интерфейсы:**
+*   **Interfaces:**
     *   `PA0`: Input for pulses from the acquiring terminal (INPUT_PULLUP).
     *   `PB12`, `PB13`: Inputs for buttons (INPUT_PULLUP).
     *   `PA9` (TX), `PA10` (RX): UART for communication with the main controller.

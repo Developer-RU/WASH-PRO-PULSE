@@ -27,7 +27,10 @@ namespace PulseNS
     }
 
     /**
-     * @internal Initializes the pulse input pin.
+     * @brief Initializes the pin for receiving pulses.
+     * 
+     * Configures pin PA0 as an input with a pull-up resistor and attaches
+     * the `buttonPressed` interrupt to it on the falling edge.
      */
     static void init(void)
     {
@@ -35,17 +38,28 @@ namespace PulseNS
         attachInterrupt(PA0, buttonPressed, FALLING);
     }
 
+    /**
+     * @brief Main pulse processing loop.
+     * 
+     * Checks if there have been no new pulses for 100 ms. If so, it transfers
+     * the accumulated value from `newCount` to the global `count` counter.
+     */
     static void loop(void)
     {
-        if(millis() > timerComplete + 100 && newCount > 0)
+        if(millis() > timerComplete + PULSE_BURST_TIMEOUT_MS && newCount > 0)
         {
             count = newCount; // Transfer the accumulated value to the global variable.
             newCount = 0;
         }
 
-        vTaskDelay(100);
+        vTaskDelay(PULSE_TASK_INTERVAL_MS);
     }
 
+    /**
+     * @brief FreeRTOS task for pulse handling.
+     * 
+     * @param pvParameters Unused pointer to task parameters.
+     */
     void TaskPulse(void *pvParameters __attribute__((unused)))
     {
         init();

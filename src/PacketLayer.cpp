@@ -12,6 +12,15 @@ namespace SenderNS
     PacketLayer::PacketLayer(void) {}
     PacketLayer::~PacketLayer(void) {}
 
+    /**
+     * @brief Forms and sends a complete data packet.
+     * 
+     * The packet has the following structure:
+     * [START_BYTE][LEN_HI][LEN_LO][DATA...][CRC]
+     * 
+     * @param data Pointer to the data array to be sent.
+     * @param dataLen Length of the data.
+     */
     void PacketLayer::sendPacket(uint8_t data[], uint16_t dataLen)
     {
         Crc crc;
@@ -28,34 +37,27 @@ namespace SenderNS
         sendData(data, dataLen);
         Serial.write(crc.get());
 
-///////////////////////////////////////////////////
-
-        // Serial.print(Control_START, HEX);
-        // Serial.print(" ");
-        // Serial.print(dataLen >> 8, HEX);
-        // Serial.print(" ");
-        // Serial.print(dataLen, HEX);
-        // Serial.print(" ");
-        // for (uint16_t i = 0; i < dataLen; i++)
-        // {
-        //     Serial.print(data[i], HEX);
-        //     Serial.print(" ");
-        //     vTaskDelay(2);
-        // }
-        // Serial.println(crc.get());
-        // Serial.println(crc.get());
-
-/////////////////////////////////////////////////////
-
+        // A small delay might be needed here depending on the receiver, but it's currently commented out.
         // vTaskDelay(150);
     }
 
+    /**
+     * @brief Sends a control byte (ACK/NAK).
+     * 
+     * @param byte The control byte to send.
+     */
     void PacketLayer::sendControl(uint8_t byte)
     {
         Serial.write(byte);
         vTaskDelay(150);
     }
 
+    /**
+     * @brief Sends a data array with a small delay between bytes.
+     * 
+     * @param data Pointer to the data array.
+     * @param dataLen Length of the data.
+     */
     void PacketLayer::sendData(uint8_t data[], uint16_t dataLen)
     {
         for (uint16_t i = 0; i < dataLen; i++)

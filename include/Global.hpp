@@ -2,7 +2,7 @@
  * @file Global.hpp
  * @author Masyukov Pavel
  * @brief Global includes and definitions for the project.
- * @version 1.0.0
+ * @version 0.0.0
  * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
  */
 #pragma once
@@ -13,6 +13,7 @@
 
 #include "ArduinoJson.h"
 #include "ArduinoCRC.h"
+#include "Constants.hpp"
 
 
 // #include "AppConfig.hpp"
