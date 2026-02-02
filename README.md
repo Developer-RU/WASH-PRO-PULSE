@@ -1,7 +1,5 @@
-<p align="left">
-  <img src="/images/version.svg" alt="version">
-  <img src="/images/license.svg" alt="license">
-</p>
+[![Version: 1.0.0](images/version.svg)](https://github.com/Developer-RU/ArdionoCCNET/releases/tag/1.0.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
 
 # WASH-PRO-PULSE
 
