@@ -34,17 +34,16 @@ namespace RoutineNS
      */
     static void init(void)
     {
-        automatState = SenderNS::AutomatState_Init;
-        state = automatState;
-
         Serial.setRx(UART_RX_PIN);
         Serial.setTx(UART_TX_PIN);
 
         Serial.begin(115200);
         
         vTaskDelay(500);
-        automatState = SenderNS::AutomatState_NotReady;
-        state = automatState;}
+
+        automatState = SenderNS::AutomatState_Init;
+        state = automatState;
+    }
 
     /**
      * @brief Main loop of the Routine task.
