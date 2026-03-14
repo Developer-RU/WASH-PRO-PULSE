@@ -7,6 +7,7 @@
  */
 #include "Indication.hpp"
 
+extern uint8_t count; ///< Global credit counter.
 extern uint8_t state; ///< Global state machine variable.
 
 namespace IndicationNS
@@ -25,7 +26,7 @@ namespace IndicationNS
         digitalWrite(LED_STATUS_PIN, LOW);
 
 
-        for (uint8_t i = 0; i < 30; i++)
+        for (uint8_t i = 0; i < 12; i++)
         {
             digitalToggle(LED_STATUS_PIN);
             digitalToggle(LED_HEARTBEAT_PIN);
@@ -49,12 +50,19 @@ namespace IndicationNS
     {
         if (state == SenderNS::AutomatState_Ready)
         {
+            digitalWrite(LED_HEARTBEAT_PIN, HIGH);
+        }
+        else if (state == SenderNS::AutomatState_Error)
+        {
+            digitalWrite(LED_HEARTBEAT_PIN, LOW);
+        }
+        else
+        {
             digitalToggle(LED_HEARTBEAT_PIN);
-            // digitalWrite(LED_HEARTBEAT_PIN, HIGH);
         }
 
 
-        if (state == SenderNS::AutomatState_Ready)
+        if (count > 0)
         {
             digitalWrite(LED_STATUS_PIN, HIGH);
         }

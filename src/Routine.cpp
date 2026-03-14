@@ -22,6 +22,7 @@ namespace RoutineNS
     uint32_t timeout{0};  ///< Timer for resetting the sending state.
 
     uint8_t request[PACKET_SIZE];          ///< Buffer for receiving incoming data.
+
     unsigned int bytes_request = 0;        ///< Number of received bytes.
     unsigned int length_request_data = 0;  ///< Length of data in the received packet.
 
@@ -40,6 +41,8 @@ namespace RoutineNS
         Serial.setTx(UART_TX_PIN);
 
         Serial.begin(115200);
+        
+        vTaskDelay(500);
     }
 
     /**
@@ -52,8 +55,6 @@ namespace RoutineNS
     {
         if (Serial.available() > 0)
         {
-            automatState = SenderNS::AutomatState_Ready;
-
             vTaskDelay(SERIAL_BUFFER_FILL_DELAY_MS / portTICK_PERIOD_MS);
 
             while (Serial.available() > 0)
@@ -88,8 +89,6 @@ namespace RoutineNS
                 vTaskDelay(SERIAL_BYTE_READ_DELAY_MS / portTICK_PERIOD_MS);
             }
             
-            automatState = SenderNS::AutomatState_NotReady;
-
             if (bytes_request > 1)
             {
                 // CRC generation and check
@@ -110,6 +109,7 @@ namespace RoutineNS
 
                     if (request[OFFSET_OPERATION_VALUE] == SenderNS::Operation_SetupResponse && request[OFFSET_DATA_1_VALUE] == 0xFF)
                     {
+                        // automatState = SenderNS::AutomatState_Ready;
                         automatState = SenderNS::AutomatState_NotReady;
                         state = automatState;
                     }
@@ -210,7 +210,7 @@ namespace RoutineNS
 
         for (;;)
         {           
-            loop();
+           loop();
         }
     }
 }

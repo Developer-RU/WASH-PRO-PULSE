@@ -21,9 +21,9 @@ void setup()
   delay(500);
   
   // Create and start FreeRTOS tasks with different priorities
-  xTaskCreate(IndicationNS::TaskIndication, (const portCHAR *)"Indication", 256, NULL, 2, NULL);
-  xTaskCreate(PulseNS::TaskPulse, (const portCHAR *)"Pulse", 256, NULL, 1, NULL);
-  xTaskCreate(ButtonNS::TaskButton, (const portCHAR *)"Button", 256, NULL, 2, NULL);
+  xTaskCreate(IndicationNS::TaskIndication, (const portCHAR *)"Indication", 1024, NULL, 2, NULL);
+  xTaskCreate(PulseNS::TaskPulse, (const portCHAR *)"Pulse", 1024, NULL, 1, NULL);
+  xTaskCreate(ButtonNS::TaskButton, (const portCHAR *)"Button", 1024, NULL, 2, NULL);
   xTaskCreate(RoutineNS::TaskRoutine, (const portCHAR *)"Routine", 2048, NULL, 2, NULL);
 
   // Start the FreeRTOS scheduler. After this call, control is passed to the tasks.

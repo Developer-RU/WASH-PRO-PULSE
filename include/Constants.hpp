@@ -48,8 +48,8 @@ const auto BUTTON_10_PIN = PB6; // PB12
 // const auto BUTTON_50_PIN = PB13;
 
 // --- Outputs ---
-const auto LED_HEARTBEAT_PIN = PB14;
-const auto LED_STATUS_PIN = PB15;
+const auto LED_HEARTBEAT_PIN = PB15;
+const auto LED_STATUS_PIN = PB14;
 
 // === Communication Protocol ===
 
