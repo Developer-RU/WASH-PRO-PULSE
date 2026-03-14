@@ -43,7 +43,8 @@ namespace RoutineNS
         Serial.begin(115200);
         
         vTaskDelay(500);
-    }
+        automatState = SenderNS::AutomatState_NotReady;
+        state = automatState;}
 
     /**
      * @brief Main loop of the Routine task.
@@ -109,8 +110,8 @@ namespace RoutineNS
 
                     if (request[OFFSET_OPERATION_VALUE] == SenderNS::Operation_SetupResponse && request[OFFSET_DATA_1_VALUE] == 0xFF)
                     {
-                        // automatState = SenderNS::AutomatState_Ready;
-                        automatState = SenderNS::AutomatState_NotReady;
+                        automatState = SenderNS::AutomatState_Ready;
+                        // automatState = SenderNS::AutomatState_NotReady;
                         state = automatState;
                     }
 

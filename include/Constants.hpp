@@ -11,7 +11,7 @@
 // === Task Delays and Timings ===
 
 // --- Routine Task ---
-const uint32_t SERIAL_BUFFER_FILL_DELAY_MS = 5;   ///< Delay to allow serial buffer to fill before reading.
+const uint32_t SERIAL_BUFFER_FILL_DELAY_MS = 15;   ///< Delay to allow serial buffer to fill before reading.
 const uint32_t SERIAL_BYTE_READ_DELAY_MS = 2;     ///< Small delay between reading consecutive bytes from serial.
 const uint32_t PACKET_PROCESSING_DELAY_MS = 150;  ///< Delay after processing an incoming packet.
 const uint32_t PACKET_RETRY_TIMEOUT_MS = 5000;    ///< Interval for re-sending a packet if no ACK is received.
@@ -29,8 +29,7 @@ const uint32_t INDICATION_TASK_INTERVAL_MS = 100; ///< Blink interval for the in
 // === Application Logic ===
 
 // --- Button Credits ---
-const uint8_t CREDIT_VALUE_BUTTON_1 = 10;         ///< Credits added by the first button.
-// const uint8_t CREDIT_VALUE_BUTTON_2 = 50;         ///< Credits added by the second button.
+const uint8_t CREDIT_VALUE_BUTTON = 10;         ///< Credits added by the first button.
 
 // --- State Machine ---
 const uint8_t STATE_RESET = 0;                    ///< A neutral state, used to reset after a transaction.
@@ -44,8 +43,7 @@ const auto UART_RX_PIN = PA10;
 // --- Inputs ---
 const auto PULSE_INPUT_PIN = PA0;
 
-const auto BUTTON_10_PIN = PB6; // PB12
-// const auto BUTTON_50_PIN = PB13;
+const auto BUTTON_PIN = PB6;
 
 // --- Outputs ---
 const auto LED_HEARTBEAT_PIN = PB15;

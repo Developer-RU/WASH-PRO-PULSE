@@ -21,7 +21,7 @@ namespace ButtonNS
    */
   static void init(void)
   {
-    pinMode(BUTTON_10_PIN, INPUT_PULLDOWN);
+    pinMode(BUTTON_PIN, INPUT_PULLDOWN);
   }
 
   /**
@@ -32,19 +32,19 @@ namespace ButtonNS
    */
   static void loop(void)
   {
-    if (digitalRead(BUTTON_10_PIN) == HIGH && flag10 == 0)
+    if (digitalRead(BUTTON_PIN) == HIGH && flag10 == 0)
     {
       flag10 = 1;
     }
-    else if (digitalRead(BUTTON_10_PIN) == HIGH && flag10 == 1)
+    else if (digitalRead(BUTTON_PIN) == HIGH && flag10 == 1)
     {
       if (state10 == 0)
       {
         state10 = 1;
-        count += CREDIT_VALUE_BUTTON_1;
+        count += CREDIT_VALUE_BUTTON;
       }
     }
-    else if (digitalRead(BUTTON_10_PIN) == LOW && flag10 == 1)
+    else if (digitalRead(BUTTON_PIN) == LOW && flag10 == 1)
     {
       state10 = 0;
       flag10 = 0;
