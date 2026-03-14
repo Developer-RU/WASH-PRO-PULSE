@@ -11,8 +11,10 @@ extern uint8_t count; ///< Global credit counter.
 
 namespace ButtonNS
 {
-  uint8_t state10{0}, state50{0}; ///< State flags to prevent multiple triggers when buttons are held down.
-  uint8_t flag10{0}, flag50{0};   ///< Flags to track the first button press.
+  uint8_t state10{0};
+  //, state50{0};                   ///< State flags to prevent multiple triggers when buttons are held down.
+  uint8_t flag10{0};
+  //, flag50{0}; ///< Flags to track the first button press.
 
   /**
    * @brief Initializes the button pins.
@@ -21,8 +23,8 @@ namespace ButtonNS
    */
   static void init(void)
   {
-    pinMode(BUTTON_10_PIN, INPUT_PULLUP);
-    pinMode(BUTTON_50_PIN, INPUT_PULLUP);
+    pinMode(BUTTON_10_PIN, INPUT_PULLDOWN);
+    // pinMode(BUTTON_50_PIN, INPUT_PULLDOWN);
   }
 
   /**
@@ -51,24 +53,24 @@ namespace ButtonNS
       flag10 = 0;
     }
 
-    // --- Button for 50 credits ---
-    if (digitalRead(BUTTON_50_PIN) == LOW && flag50 == 0)
-    {
-      flag50 = 1;
-    }
-    else if (digitalRead(BUTTON_50_PIN) == LOW && flag50 == 1)
-    {
-      if (state50 == 0)
-      {
-        state50 = 1;
-        count += CREDIT_VALUE_BUTTON_2;
-      }
-    }
-    else if (digitalRead(BUTTON_50_PIN) == HIGH && flag50 == 1)
-    {
-      state50 = 0;
-      flag50 = 0;
-    }
+    // // --- Button for 50 credits ---
+    // if (digitalRead(BUTTON_50_PIN) == LOW && flag50 == 0)
+    // {
+    //   flag50 = 1;
+    // }
+    // else if (digitalRead(BUTTON_50_PIN) == LOW && flag50 == 1)
+    // {
+    //   if (state50 == 0)
+    //   {
+    //     state50 = 1;
+    //     count += CREDIT_VALUE_BUTTON_2;
+    //   }
+    // }
+    // else if (digitalRead(BUTTON_50_PIN) == HIGH && flag50 == 1)
+    // {
+    //   state50 = 0;
+    //   flag50 = 0;
+    // }
 
     vTaskDelay(BUTTON_DEBOUNCE_DELAY_MS);
   }

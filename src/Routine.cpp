@@ -51,7 +51,9 @@ namespace RoutineNS
     static void loop(void)
     {
         if (Serial.available() > 0)
-        {   
+        {
+            automatState = SenderNS::AutomatState_Ready;
+
             vTaskDelay(SERIAL_BUFFER_FILL_DELAY_MS / portTICK_PERIOD_MS);
 
             while (Serial.available() > 0)
@@ -85,6 +87,8 @@ namespace RoutineNS
 
                 vTaskDelay(SERIAL_BYTE_READ_DELAY_MS / portTICK_PERIOD_MS);
             }
+            
+            automatState = SenderNS::AutomatState_NotReady;
 
             if (bytes_request > 1)
             {
@@ -107,6 +111,7 @@ namespace RoutineNS
                     if (request[OFFSET_OPERATION_VALUE] == SenderNS::Operation_SetupResponse && request[OFFSET_DATA_1_VALUE] == 0xFF)
                     {
                         automatState = SenderNS::AutomatState_NotReady;
+                        state = automatState;
                     }
 
                     if (request[OFFSET_OPERATION_VALUE] == SenderNS::Operation_AutomatState)
@@ -114,6 +119,7 @@ namespace RoutineNS
                         if (request[OFFSET_DATA_1_TYPE] == SenderNS::Type_AutomatState)
                         {
                             automatState = (SenderNS::AutomatState)request[OFFSET_DATA_1_VALUE];
+                            state = automatState;
                         }
                     }
                 }
@@ -203,7 +209,7 @@ namespace RoutineNS
         init();
 
         for (;;)
-        {
+        {           
             loop();
         }
     }

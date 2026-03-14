@@ -30,7 +30,7 @@ const uint32_t INDICATION_TASK_INTERVAL_MS = 100; ///< Blink interval for the in
 
 // --- Button Credits ---
 const uint8_t CREDIT_VALUE_BUTTON_1 = 10;         ///< Credits added by the first button.
-const uint8_t CREDIT_VALUE_BUTTON_2 = 50;         ///< Credits added by the second button.
+// const uint8_t CREDIT_VALUE_BUTTON_2 = 50;         ///< Credits added by the second button.
 
 // --- State Machine ---
 const uint8_t STATE_RESET = 0;                    ///< A neutral state, used to reset after a transaction.
@@ -43,8 +43,9 @@ const auto UART_RX_PIN = PA10;
 
 // --- Inputs ---
 const auto PULSE_INPUT_PIN = PA0;
-const auto BUTTON_10_PIN = PB12;
-const auto BUTTON_50_PIN = PB13;
+
+const auto BUTTON_10_PIN = PB6; // PB12
+// const auto BUTTON_50_PIN = PB13;
 
 // --- Outputs ---
 const auto LED_HEARTBEAT_PIN = PB14;

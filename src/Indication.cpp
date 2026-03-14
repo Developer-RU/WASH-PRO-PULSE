@@ -19,10 +19,23 @@ namespace IndicationNS
     static void init(void)
     {
         pinMode(LED_HEARTBEAT_PIN, OUTPUT);
-        digitalWrite(LED_HEARTBEAT_PIN, HIGH);
+        digitalWrite(LED_HEARTBEAT_PIN, LOW);
 
         pinMode(LED_STATUS_PIN, OUTPUT);
-        digitalWrite(LED_STATUS_PIN, HIGH);
+        digitalWrite(LED_STATUS_PIN, LOW);
+
+
+        for (uint8_t i = 0; i < 30; i++)
+        {
+            digitalToggle(LED_STATUS_PIN);
+            digitalToggle(LED_HEARTBEAT_PIN);
+            vTaskDelay(INDICATION_TASK_INTERVAL_MS);
+        }
+        
+        vTaskDelay(INDICATION_TASK_INTERVAL_MS);
+
+        digitalWrite(LED_HEARTBEAT_PIN, LOW);
+        digitalWrite(LED_STATUS_PIN, LOW);        
     }
 
     /**
@@ -34,16 +47,20 @@ namespace IndicationNS
      */
     static void loop(void)
     {
-        // digitalToggle(PB14);
-        digitalWrite(LED_HEARTBEAT_PIN, LOW);
+        if (state == SenderNS::AutomatState_Ready)
+        {
+            digitalToggle(LED_HEARTBEAT_PIN);
+            // digitalWrite(LED_HEARTBEAT_PIN, HIGH);
+        }
+
 
         if (state == SenderNS::AutomatState_Ready)
         {
-            digitalWrite(LED_STATUS_PIN, LOW);
+            digitalWrite(LED_STATUS_PIN, HIGH);
         }
         else
         {
-            digitalWrite(LED_STATUS_PIN, HIGH);
+            digitalWrite(LED_STATUS_PIN, LOW);
         }
 
         vTaskDelay(INDICATION_TASK_INTERVAL_MS);
