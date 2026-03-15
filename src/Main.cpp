@@ -1,43 +1,75 @@
 /**
  * @file Main.cpp
  * @author Masyukov Pavel
- * @brief Program entry point. This is where all FreeRTOS tasks are created and started.
- * @version 1.0.0
- * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ * @brief Program entry point. Creates and starts all FreeRTOS tasks.
+ * @version 2.0.0
+ * @see https://github.com/Developer-RU/WASH-PRO-PULSE
  */
 #include "Main.hpp"
 
 /**
- * @brief Main setup function. Called once on startup.
+ * @brief Настройка и запуск системы.
  * 
- * Initializes and starts all FreeRTOS tasks:
- * - TaskIndication: Manages LED indication.
- * - TaskPulse: Processes pulses from the payment terminal.
- * - TaskButton: Handles button presses for manual credit addition.
- * - TaskRoutine: Manages the main logic and data exchange with the controller.
+ * Создаёт задачи FreeRTOS с различными приоритетами:
+ * - Indication (приоритет 2): управление светодиодами
+ * - Pulse (приоритет 1): подсчёт импульсов
+ * - Button (приоритет 3): обработка кнопки (наивысший приоритет)
+ * - Routine (приоритет 1): связь с контроллером
+ * 
+ * После vTaskStartScheduler() управление передаётся планировщику FreeRTOS.
  */
 void setup()
 {
-  delay(500);
-  
-  // Create and start FreeRTOS tasks with different priorities
-  xTaskCreate(IndicationNS::TaskIndication, (const portCHAR *)"Indication", 1024, NULL, 2, NULL);
-  xTaskCreate(PulseNS::TaskPulse, (const portCHAR *)"Pulse", 1024, NULL, 1, NULL);
-  xTaskCreate(ButtonNS::TaskButton, (const portCHAR *)"Button", 1024, NULL, 2, NULL);
-  xTaskCreate(RoutineNS::TaskRoutine, (const portCHAR *)"Routine", 2048, NULL, 2, NULL);
+    delay(500);  // Задержка перед запуском
 
-  // Start the FreeRTOS scheduler. After this call, control is passed to the tasks.
-  vTaskStartScheduler();
+    // Создание задач FreeRTOS
+    xTaskCreate(
+        Indication::TaskIndication,
+        (const portCHAR *)"Indication",
+        256,           // Размер стека (слова)
+        NULL,          // Параметры
+        2,             // Приоритет
+        NULL           // Дескриптор задачи
+    );
+
+    xTaskCreate(
+        Pulse::TaskPulse,
+        (const portCHAR *)"Pulse",
+        256,
+        NULL,
+        1,             // Низкий приоритет
+        NULL
+    );
+
+    xTaskCreate(
+        Button::TaskButton,
+        (const portCHAR *)"Button",
+        256,
+        NULL,
+        3,             // Наивысший приоритет (быстрая реакция)
+        NULL
+    );
+
+    xTaskCreate(
+        Routine::TaskRoutine,
+        (const portCHAR *)"Routine",
+        1024,          // Большой стек для UART
+        NULL,
+        1,             // Низкий приоритет
+        NULL
+    );
+
+    // Запуск планировщика FreeRTOS
+    vTaskStartScheduler();
 }
 
 /**
- * @brief Main Arduino loop.
+ * @brief Основной цикл Arduino.
  * 
- * Not used in this project, as all logic is implemented in FreeRTOS tasks.
- * The FreeRTOS scheduler takes over CPU control after vTaskStartScheduler() is called.
+ * Не используется — все задачи выполняются в FreeRTOS.
+ * После vTaskStartScheduler() управление передано планировщику.
  */
 void loop()
 {
-  // User code can be placed here if needed, but it will not be executed
-  // because FreeRTOS takes control after setup().
+    // Пусто — задачи выполняются в FreeRTOS
 }

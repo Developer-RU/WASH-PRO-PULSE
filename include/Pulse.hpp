@@ -1,32 +1,36 @@
 /**
  * @file Pulse.hpp
  * @author Masyukov Pavel
- * @brief Header file for the pulse handling module.
- * @version 1.0.0
- * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ * @brief Модуль подсчёта импульсов от внешнего устройства.
+ * @version 2.0.0
+ * @see https://github.com/Developer-RU/WASH-PRO-PULSE
  */
 #pragma once
 
 #include "Global.hpp"
 
-/**
- * @namespace PulseNS
- * @brief Namespace to encapsulate pulse handling logic.
- */
-namespace PulseNS
+namespace Pulse
 {
     /**
-     * @brief Initializes the pin for reading pulses and sets up the interrupt.
+     * @brief Инициализация входа импульсов.
+     * 
+     * Настраивает PA0 как INPUT_FLOATING с прерыванием по спадающему фронту.
      */
     static void init(void);
+    
     /**
-     * @brief Loop function that checks for the end of a pulse burst.
+     * @brief Основной цикл обработки пачек импульсов.
+     * 
+     * Если прошло 100 мс без новых импульсов — переносит накопленные
+     * импульсы в глобальный счётчик credit_count.
      */
     static void loop(void);
-
+    
     /**
-     * @brief FreeRTOS task for handling pulses.
-     * @param pvParameters Unused pointer to task parameters.
+     * @brief Задача FreeRTOS для подсчёта импульсов.
+     * @param pvParameters Не используется.
+     * 
+     * Приоритет: 1 (низкий).
      */
     void TaskPulse(void *pvParameters __attribute__((unused)));
-};
+}

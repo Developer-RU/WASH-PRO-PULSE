@@ -1,216 +1,236 @@
 /**
  * @file Routine.cpp
  * @author Masyukov Pavel
- * @brief Implementation of the main routine task, handling communication with the master controller.
- * @version 1.0.0
- * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ * @brief Main communication task with the master controller.
+ * @version 2.0.0
+ * @see https://github.com/Developer-RU/WASH-PRO-PULSE
  */
 #include "Routine.hpp"
 
-extern uint8_t count; ///< Global credit counter.
-extern uint8_t state; ///< Global state of the machine.
+// Глобальные переменные из других модулей
+extern volatile uint8_t credit_count;       ///< Счётчик кредитов (импульсы + кнопка)
+extern volatile uint8_t device_state;       ///< Текущее состояние устройства
+extern volatile bool is_startup_complete;   ///< Флаг завершения стартовой задержки
 
-namespace RoutineNS
+namespace Routine
 {
-    SenderNS::CommandLayer commandLayer; ///< Instance of the class for creating commands.
-    SenderNS::AutomatState automatState; ///< Current state of the machine.
+    // Объекты и переменные модуля
+    Protocol::PacketBuilder packet_builder;  ///< Генератор протокольных пакетов
+    Crc crc;                                  ///< Калькулятор CRC
 
-    Crc crc; ///< Instance of the class for CRC calculation.
+    // Переменные состояния
+    uint8_t is_sending{0};           ///< Флаг активной отправки пакета
+    uint32_t retry_time{0};          ///< Время последней попытки отправки
+    uint32_t timeout_time{0};        ///< Время таймаута отправки
+    uint32_t startup_start_time{0};  ///< Время старта устройства
+    uint8_t last_sent_count{0};      ///< Последнее отправленное значение
 
-    uint8_t sending{0};   ///< Flag indicating that a packet has been sent and a response is expected.
-    uint32_t repeat{0};   ///< Timer for re-sending a packet.
-    uint32_t timeout{0};  ///< Timer for resetting the sending state.
-
-    uint8_t request[PACKET_SIZE];          ///< Buffer for receiving incoming data.
-
-    unsigned int bytes_request = 0;        ///< Number of received bytes.
-    unsigned int length_request_data = 0;  ///< Length of data in the received packet.
-
-    /**
-     * @brief Initializes the Routine task.
-     * 
-     * Sets the initial state of the machine and configures the Serial port
-     * for data exchange with the controller.
-     */
-    static void init(void)
-    {
-        Serial.setRx(UART_RX_PIN);
-        Serial.setTx(UART_TX_PIN);
-
-        Serial.begin(115200);
-        
-        vTaskDelay(500);
-
-        automatState = SenderNS::AutomatState_Init;
-        state = automatState;
-    }
+    // Буфер приёма
+    uint8_t rx_buffer[PROTOCOL_BUFFER_SIZE];  ///< Буфер приёма данных
+    uint16_t rx_bytes = 0;                    ///< Количество принятых байт
+    uint16_t rx_data_length = 0;              ///< Длина данных в пакете
 
     /**
-     * @brief Main loop of the Routine task.
-     * 
-     * Processes incoming data from the controller and sends packets
-     * with status or credit count.
+     * @brief Обработка входящих байтов UART.
+     * @return true если получен ACK, false иначе.
      */
-    static void loop(void)
+    static bool process_rx_bytes()
     {
-        if (Serial.available() > 0)
+        vTaskDelay(5 / portTICK_PERIOD_MS);
+
+        while (Serial.available() > 0)
         {
-            vTaskDelay(SERIAL_BUFFER_FILL_DELAY_MS / portTICK_PERIOD_MS);
+            uint8_t byte = (uint8_t)Serial.read();
 
-            while (Serial.available() > 0)
+            // Обработка управляющих байтов (ACK/NAK)
+            if (rx_bytes == 0 && (byte == Protocol::Ack || byte == Protocol::Nak))
             {
-                uint8_t b = (uint8_t)Serial.read();
-
-                if (bytes_request == 0 && (b == SenderNS::Control_ACK || b == SenderNS::Control_NAK))
+                if (byte == Protocol::Ack)
                 {
-                    // Handle standalone ACK/NAK responses
-                    if (b == SenderNS::Control_ACK)
-                    {
-                        count = 0;
-                        sending = 0;
-                        repeat = 0;
-                        timeout = 0;
-                        state = STATE_RESET;
-                    }
-
-                    if (b == SenderNS::Control_NAK)
-                    {
-                        // NAK received, maybe trigger a faster retry or log it.
-                        // Currently does nothing.
-                    }
+                    // Контроллер подтвердил получение — сбрасываем флаги
+                    last_sent_count = 0;
+                    is_sending = 0;
+                    retry_time = 0;
+                    timeout_time = 0;
+                    return true;
                 }
-                else
-                {
-                    // Accumulate bytes for a data packet
-                    request[bytes_request] = b;
-                    bytes_request++;
-                }
-
-                vTaskDelay(SERIAL_BYTE_READ_DELAY_MS / portTICK_PERIOD_MS);
-            }
-            
-            if (bytes_request > 1)
-            {
-                // CRC generation and check
-                length_request_data = (request[1] << 8) + request[2];
-
-                crc.start();
-
-                for (int i = 0; i < length_request_data + 3; i++)
-                {
-                    crc.add(request[i]);
-                }
-
-                uint8_t resCrc = crc.get();
-
-                if (request[bytes_request - 1] == resCrc)
-                {
-                    Serial.write(SenderNS::Control_ACK); // Protocol logic
-
-                    if (request[OFFSET_OPERATION_VALUE] == SenderNS::Operation_SetupResponse && request[OFFSET_DATA_1_VALUE] == 0xFF)
-                    {
-                        automatState = SenderNS::AutomatState_Ready;
-                        // automatState = SenderNS::AutomatState_NotReady;
-                        state = automatState;
-                    }
-
-                    if (request[OFFSET_OPERATION_VALUE] == SenderNS::Operation_AutomatState)
-                    {
-                        if (request[OFFSET_DATA_1_TYPE] == SenderNS::Type_AutomatState)
-                        {
-                            automatState = (SenderNS::AutomatState)request[OFFSET_DATA_1_VALUE];
-                            state = automatState;
-                        }
-                    }
-                }
-                else
-                {
-                    // Packet re-transmission is required
-                    Serial.write(SenderNS::Control_NAK);
-                }
-
-                // Clear receive buffers and reset sent/received byte counters
-                for (int i = 0; i < PACKET_SIZE; i++)
-                    request[i] = 0x00;
-
-                bytes_request = 0;
-                length_request_data = 0;
-            }
-            else if (bytes_request == 1) {
-                // A single byte was received that was not ACK or NAK.
-                // This is likely an error or incomplete packet. Resetting.
-                bytes_request = 0;
-            }
-
-            vTaskDelay(PACKET_PROCESSING_DELAY_MS / portTICK_PERIOD_MS);
-        }
-
-        if (sending == 0)
-        {
-            if (automatState == SenderNS::AutomatState_Init)
-            {
-                commandLayer.setupPacket();
+                return false;  // NAK игнорируем
             }
             else
             {
-                if (count > 0 && automatState == SenderNS::AutomatState_Ready)
-                {
-                    state = automatState;
-                    commandLayer.cashPacket(count);
-                }
-                else
-                {
-                    commandLayer.pollPacket();
-                }
+                // Накопление байт пакета
+                rx_buffer[rx_bytes++] = byte;
             }
 
-            timeout = repeat = millis();
-            sending = 1;
+            vTaskDelay(2 / portTICK_PERIOD_MS);
+        }
+        return false;
+    }
+
+    /**
+     * @brief Проверка CRC и отправка ответа.
+     */
+    static void verify_and_respond()
+    {
+        if (rx_bytes <= 1) return;
+
+        // Извлекаем длину данных из пакета (байты 1-2)
+        rx_data_length = (rx_buffer[1] << 8) + rx_buffer[2];
+
+        // Расчёт CRC принятых данных
+        crc.start();
+        for (uint16_t i = 0; i < rx_data_length + 3; i++)
+        {
+            crc.add(rx_buffer[i]);
+        }
+
+        // Проверка и ответ
+        if (rx_buffer[rx_bytes - 1] == crc.get())
+        {
+            Serial.write(Protocol::Ack);  // CRC верен
         }
         else
         {
-            if (millis() > repeat + PACKET_RETRY_TIMEOUT_MS && millis() < timeout + PACKET_RETRY_TIMEOUT_MS)
-            {
-                if (automatState == SenderNS::AutomatState_Init)
-                {
-                    commandLayer.setupPacket();
-                }
-                else
-                {
-                    if (count > 0 && automatState == SenderNS::AutomatState_Ready)
-                    {
-                        commandLayer.cashPacket(count);
-                    }
-                    else
-                    {
-                        commandLayer.pollPacket();
-                    }
-                }
+            Serial.write(Protocol::Nak);  // CRC неверен
+        }
 
-                repeat = millis();
-            }
+        // Очистка буфера
+        for (uint16_t i = 0; i < PROTOCOL_BUFFER_SIZE; i++)
+            rx_buffer[i] = 0x00;
 
-            if (millis() > timeout + PACKET_RETRY_TIMEOUT_MS)
-            {
-                sending = 0;
-                repeat = 0;
-                timeout = 0;
-            }
+        rx_bytes = 0;
+        rx_data_length = 0;
+    }
+
+    /**
+     * @brief Отправка пакета с кредитами.
+     * @param count Количество кредитов.
+     */
+    static void send_credit_packet(uint8_t count)
+    {
+        packet_builder.build_cash_packet(count);
+        last_sent_count = count;
+        credit_count = 0;
+        timeout_time = retry_time = millis();
+        is_sending = 1;
+    }
+
+    /**
+     * @brief Отправка poll-пакета.
+     */
+    static void send_poll_packet()
+    {
+        packet_builder.build_poll_packet();
+        timeout_time = retry_time = millis();
+        is_sending = 1;
+    }
+
+    /**
+     * @brief Повторная отправка пакета.
+     */
+    static void retry_send()
+    {
+        if (credit_count > 0 && credit_count != last_sent_count)
+        {
+            send_credit_packet(credit_count);
+        }
+        else
+        {
+            send_poll_packet();
         }
     }
 
     /**
-     * @brief FreeRTOS task for main logic and communication.
+     * @brief Инициализация модуля связи.
      * 
-     * @param pvParameters Unused pointer to task parameters.
+     * Настраивает UART (PA9/PA10), устанавливает состояние Ready,
+     * запоминает время старта для 3-секундной задержки.
+     */
+    static void init(void)
+    {
+        // Устанавливаем состояние устройства в Ready
+        device_state = Protocol::Ready;
+
+        // Настройка UART1: RX=PA10, TX=PA9, скорость 115200
+        Serial.setRx(PA10);
+        Serial.setTx(PA9);
+        Serial.begin(115200);
+
+        // Запоминаем время старта для отсчёта 3 секунд
+        startup_start_time = millis();
+        is_startup_complete = false;
+        credit_count = 0;
+
+        // Даём время на стабилизацию UART
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+    }
+
+    /**
+     * @brief Основной цикл обработки связи.
+     */
+    static void loop(void)
+    {
+        // === Обработка входящих данных ===
+        if (Serial.available() > 0)
+        {
+            process_rx_bytes();
+            verify_and_respond();
+        }
+        else
+        {
+            // === Отправка пакетов ===
+
+            // Проверка завершения стартовой задержки (3 секунды)
+            if (!is_startup_complete && millis() - startup_start_time >= 3000)
+            {
+                is_startup_complete = true;
+            }
+
+            // Отправка только после завершения стартового периода
+            if (is_sending == 0 && is_startup_complete)
+            {
+                // Есть новые кредиты — отправляем cash-пакет немедленно
+                if (credit_count > 0 && credit_count != last_sent_count)
+                {
+                    send_credit_packet(credit_count);
+                }
+                // Нет кредитов — отправляем poll-пакет раз в 3 секунды
+                else if (millis() > timeout_time + 3000 || timeout_time == 0)
+                {
+                    send_poll_packet();
+                }
+            }
+            else
+            {
+                // Повторная отправка при отсутствии ответа (через 1 сек, макс. 3 сек)
+                if (is_startup_complete && millis() > retry_time + 1000 && millis() < timeout_time + 3000)
+                {
+                    retry_send();
+                }
+
+                // Таймаут — сброс и новая попытка
+                if (millis() > timeout_time + 3000)
+                {
+                    is_sending = 0;
+                    retry_time = 0;
+                    timeout_time = millis();
+                }
+            }
+        }
+
+        vTaskDelay(20 / portTICK_PERIOD_MS);
+    }
+
+    /**
+     * @brief Задача FreeRTOS для обработки связи.
+     * @param pvParameters Не используется.
      */
     void TaskRoutine(void *pvParameters __attribute__((unused)))
     {
         init();
-
         for (;;)
-        {           
-           loop();
+        {
+            loop();
         }
     }
 }

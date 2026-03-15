@@ -1,63 +1,77 @@
 /**
  * @file Constants.hpp
  * @author Masyukov Pavel
- * @brief Defines global constants for the project.
- * @version 0.0.0
- * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ * @brief Глобальные константы и настройки проекта.
+ * @version 2.0.0
+ * @see https://github.com/Developer-RU/WASH-PRO-PULSE
  */
-
 #pragma once
 
-// === Task Delays and Timings ===
+// ============================================================================
+// === ТАЙМИНГИ ЗАДАЧ ===
+// ============================================================================
 
-// --- Routine Task ---
-const uint32_t SERIAL_BUFFER_FILL_DELAY_MS = 15;   ///< Delay to allow serial buffer to fill before reading.
-const uint32_t SERIAL_BYTE_READ_DELAY_MS = 2;     ///< Small delay between reading consecutive bytes from serial.
-const uint32_t PACKET_PROCESSING_DELAY_MS = 150;  ///< Delay after processing an incoming packet.
-const uint32_t PACKET_RETRY_TIMEOUT_MS = 5000;    ///< Interval for re-sending a packet if no ACK is received.
+// --- Задача Routine (связь с контроллером) ---
+const uint32_t SERIAL_BUFFER_FILL_DELAY_MS = 5;   ///< Задержка для заполнения буфера UART перед чтением.
+const uint32_t SERIAL_BYTE_READ_DELAY_MS = 2;     ///< Задержка между чтением последовательных байт из UART.
+const uint32_t PACKET_PROCESSING_DELAY_MS = 150;  ///< Задержка после обработки входящего пакета.
+const uint32_t PACKET_RETRY_TIMEOUT_MS = 5000;    ///< Максимальное время на повторную отправку пакета (5 сек).
 
-// --- Pulse Task ---
-const uint32_t PULSE_BURST_TIMEOUT_MS = 100;      ///< Time without pulses to consider a burst complete.
-const uint32_t PULSE_TASK_INTERVAL_MS = 100;      ///< Check interval for the pulse task.
+// --- Задача Pulse (подсчёт импульсов) ---
+const uint32_t PULSE_BURST_TIMEOUT_MS = 100;      ///< Таймаут окончания пачки импульсов (100 мс без импульсов).
+const uint32_t PULSE_TASK_INTERVAL_MS = 100;      ///< Интервал опроса задачи подсчёта импульсов.
 
-// --- Button Task ---
-const uint32_t BUTTON_DEBOUNCE_DELAY_MS = 10;     ///< Delay for button debouncing.
+// --- Задача Button (обработка кнопки) ---
+const uint32_t BUTTON_DEBOUNCE_DELAY_MS = 10;     ///< Задержка антидребезга кнопки.
 
-// --- Indication Task ---
-const uint32_t INDICATION_TASK_INTERVAL_MS = 100; ///< Blink interval for the indication task.
+// --- Задача Indication (управление светодиодами) ---
+const uint32_t INDICATION_TASK_INTERVAL_MS = 100; ///< Интервал обновления индикации.
 
-// === Application Logic ===
+// ============================================================================
+// === ЛОГИКА ПРИЛОЖЕНИЯ ===
+// ============================================================================
 
-// --- Button Credits ---
-const uint8_t CREDIT_VALUE_BUTTON = 10;         ///< Credits added by the first button.
+// --- Кредиты от кнопки ---
+const uint8_t CREDIT_VALUE_BUTTON_1 = 50;         ///< Количество кредитов за нажатие кнопки 1.
 
-// --- State Machine ---
-const uint8_t STATE_RESET = 0;                    ///< A neutral state, used to reset after a transaction.
+// --- Состояния устройства ---
+const uint8_t STATE_RESET = 0;                    ///< Состояние сброса (нейтральное состояние после транзакции).
 
-// === Pin Definitions ===
+// ============================================================================
+// === НАЗНАЧЕНИЕ ВЫВОДОВ (PINS) ===
+// ============================================================================
 
-// --- Communication ---
-const auto UART_TX_PIN = PA9;
-const auto UART_RX_PIN = PA10;
+// --- UART (коммуникация с контроллером) ---
+const auto UART_TX_PIN = PA10;                    ///< UART1 TX: вывод данных (подключён к RX контроллера).
+const auto UART_RX_PIN = PA9;                     ///< UART1 RX: приём данных (подключён к TX контроллера).
 
-// --- Inputs ---
-const auto PULSE_INPUT_PIN = PA0;
+// --- Входы (Inputs) ---
+const auto PULSE_INPUT_PIN = PA0;                 ///< Вход импульсов от платёжного устройства.
+const auto BUTTON_10_PIN = PB6;                   ///< Кнопка ручного добавления кредитов.
 
-const auto BUTTON_PIN = PB6;
+// --- Выходы (Outputs) ---
+const auto LED_HEARTBEAT_PIN = PB15;              ///< LED 1: индикатор обмена данными (мигает при отправке кредитов).
+const auto LED_STATUS_PIN = PB14;                 ///< LED 2: индикатор состояния устройства (мигает в режиме готовности).
 
-// --- Outputs ---
-const auto LED_HEARTBEAT_PIN = PB15;
-const auto LED_STATUS_PIN = PB14;
-
-// === Communication Protocol ===
+// ============================================================================
+// === ПРОТОКОЛ ОБМЕНА ДАННЫМИ ===
+// ============================================================================
 
 /**
- * @brief Defines offsets for accessing fields in a received data packet.
- * Assumes a TLV (Type-Length-Value) structure for the data payload.
+ * @brief Смещения для разбора входящих пакетов.
+ * 
+ * Структура пакета контроллера (TLV-формат):
+ * [START: 1 байт] [Length: 2 байта] [Data: N байт] [CRC: 1 байт]
+ * 
+ * Data содержит TLV-элементы:
+ * - Type (1 байт): тип операции
+ * - Length (1 байт): длина данных
+ * - Value (N байт): значение
  */
-enum PacketOffsets {
-    OFFSET_OPERATION_TYPE = 3,  ///< Offset to the 'Type' field of the operation TLV.
-    OFFSET_OPERATION_VALUE = 5, ///< Offset to the 'Value' field of the operation TLV.
-    OFFSET_DATA_1_TYPE = 6,     ///< Offset to the 'Type' field of the first data TLV.
-    OFFSET_DATA_1_VALUE = 8,    ///< Offset to the 'Value' field of the first data TLV.
+enum PacketOffsets 
+{
+    OFFSET_OPERATION_TYPE = 3,    ///< Смещение типа операции в пакете.
+    OFFSET_OPERATION_VALUE = 5,   ///< Смещение значения операции в пакете.
+    OFFSET_DATA_1_TYPE = 6,       ///< Смещение типа первого данных TLV.
+    OFFSET_DATA_1_VALUE = 8,      ///< Смещение значения первого данных TLV.
 };

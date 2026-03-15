@@ -1,74 +1,105 @@
 /**
  * @file Pulse.cpp
  * @author Masyukov Pavel
- * @brief Implementation of the module for counting pulses from an external device.
- * @version 1.0.0
- * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ * @brief Module for counting pulses from an external device.
+ * @version 2.0.0
+ * @see https://github.com/Developer-RU/WASH-PRO-PULSE
  */
 #include "Pulse.hpp"
 
-extern uint8_t count; ///< Global variable to store the total number of pulses.
+// Глобальные переменные из других модулей
+extern volatile uint8_t credit_count;       ///< Счётчик кредитов (импульсы + кнопка)
+extern volatile bool is_startup_complete;   ///< Флаг завершения стартовой задержки
 
-namespace PulseNS
+namespace Pulse
 {
-    unsigned long timerComplete = 0; ///< Timer to detect the end of a pulse burst.
-    uint8_t newCount = 0;            ///< Temporary counter to accumulate pulses in the interrupt.
+    // Переменные модуля
+    uint32_t pulse_burst_end_time = 0;   ///< Время окончания пачки импульсов
+    volatile uint8_t pulse_buffer = 0;   ///< Буфер накопления импульсов в прерывании
+    uint32_t last_pulse_time = 0;        ///< Время последнего импульса (для защиты от дребезга)
 
     /**
-     * @brief Interrupt Service Routine (ISR) for pin PA0.
+     * @brief Прерывание по входу импульсов (PA0).
      * 
-     * Triggers on the falling edge of the signal from the pulse input pin.
-     * Increments the `newCount` counter and updates the `timerComplete` timer.
+     * Срабатывает по спадающему фронту сигнала.
+     * 
+     * Защита от дребезга: минимальный интервал между импульсами 10 мс.
+     * Ограничение: максимум 250 импульсов в пачке (защита от переполнения).
+     * Игнорирование во время стартовой задержки (первые 3 секунды).
      */
-    void buttonPressed()
+    void pulse_isr()
     {
-        newCount++;
-        timerComplete = millis();
+        // Игнорирование импульсов во время стартовой задержки (3 секунды)
+        if (!is_startup_complete)
+        {
+            return;
+        }
+
+        uint32_t now = millis();
+
+        // Защита от дребезга: минимальный интервал 10 мс между импульсами
+        if (now - last_pulse_time < 10)
+        {
+            return;
+        }
+        last_pulse_time = now;
+
+        // Ограничение максимального количества импульсов в пачке (250)
+        if (pulse_buffer < 250)
+        {
+            pulse_buffer++;
+        }
+        
+        // Обновление времени окончания пачки
+        pulse_burst_end_time = millis();
     }
 
     /**
-     * @brief Initializes the pin for receiving pulses.
+     * @brief Инициализация входа импульсов.
      * 
-     * Configures pin PA0 as an input with a pull-up resistor and attaches
-     * the `buttonPressed` interrupt to it on the falling edge.
+     * Настройка PA0 как вход с плавающим состоянием (INPUT_FLOATING).
+     * Подключение прерывания pulse_isr() по спадающему фронту.
      */
     static void init(void)
     {
-        pinMode(PULSE_INPUT_PIN, INPUT_PULLUP); // Configure the pulse pin as an input with a pull-up resistor.
-        attachInterrupt(PULSE_INPUT_PIN, buttonPressed, FALLING);
+        pinMode(PA0, INPUT_FLOATING);
+        attachInterrupt(PA0, pulse_isr, FALLING);
     }
 
     /**
-     * @brief Main pulse processing loop.
+     * @brief Обработка пачки импульсов.
      * 
-     * Checks if there have been no new pulses for 100 ms. If so, it transfers
-     * the accumulated value from `newCount` to the global `count` counter.
+     * Если прошло 100 мс без новых импульсов — пачка завершена.
+     * Перенос накопленных импульсов в глобальный счётчик credit_count.
+     * Используется критическая секция для атомарности операции.
      */
     static void loop(void)
     {
-        if(millis() > timerComplete + PULSE_BURST_TIMEOUT_MS && newCount > 0)
+        // Проверка окончания пачки импульсов (таймаут 100 мс)
+        if (millis() > pulse_burst_end_time + PULSE_BURST_TIMEOUT_MS && pulse_buffer > 0)
         {
-            count = newCount; // Transfer the accumulated value to the global variable.
-            newCount = 0;
+            // Критическая секция: запрет прерываний на время копирования
+            noInterrupts();
+            credit_count += pulse_buffer;  // Добавление к глобальному счётчику
+            pulse_buffer = 0;               // Очистка буфера
+            interrupts();                   // Разрешение прерываний
         }
 
         vTaskDelay(PULSE_TASK_INTERVAL_MS);
     }
 
     /**
-     * @brief FreeRTOS task for pulse handling.
-     * 
-     * @param pvParameters Unused pointer to task parameters.
+     * @brief Задача FreeRTOS для обработки импульсов.
+     * @param pvParameters Не используется.
      */
     void TaskPulse(void *pvParameters __attribute__((unused)))
     {
         init();
-
-        timerComplete = millis();
+        pulse_burst_end_time = millis();
 
         for (;;)
         {
             loop();
         }
     }
-};
+}

@@ -1,33 +1,46 @@
 /**
  * @file Indication.hpp
  * @author Masyukov Pavel
- * @brief Header file for the LED indication module.
- * @version 1.0.0
- * @see https://github.com/pavelmasyukov/WASH-PRO-PULSE
+ * @brief Модуль управления светодиодной индикацией.
+ * @version 2.0.0
+ * @see https://github.com/Developer-RU/WASH-PRO-PULSE
  */
 #pragma once
 
 #include "Global.hpp"
-#include "CommandsLayer.hpp"
+#include "Protocol.hpp"
 
-/**
- * @namespace IndicationNS
- * @brief Namespace to encapsulate LED indication logic.
- */
-namespace IndicationNS
+extern volatile uint8_t device_state;       ///< Текущее состояние устройства.
+extern volatile bool is_startup_complete;   ///< Флаг завершения стартовой задержки (3 сек).
+
+namespace Indication
 {
     /**
-     * @brief Initializes the LED output pins.
+     * @brief Инициализация выходов светодиодов.
+     * 
+     * PB14 (LED_HEARTBEAT): индикатор обмена данными.
+     * PB15 (LED_STATUS): индикатор состояния устройства.
      */
     static void init(void);
+    
     /**
-     * @brief Loop function that controls the LED states.
+     * @brief Управление светодиодами.
+     * 
+     * PB15 (статусный):
+     * - 0-3 сек: быстрое мигание (100 мс)
+     * - После 3 сек: медленное мигание (1000 мс)
+     * 
+     * PB14 (данные):
+     * - Включается при новых кредитах
+     * - Выключается после отправки
      */
     static void loop(void);
-
+    
     /**
-     * @brief FreeRTOS task for managing LED indication.
-     * @param pvParameters Unused pointer to task parameters.
+     * @brief Задача FreeRTOS для управления индикацией.
+     * @param pvParameters Не используется.
+     * 
+     * Приоритет: 2 (средний).
      */
     void TaskIndication(void *pvParameters __attribute__((unused)));
-};
+}
