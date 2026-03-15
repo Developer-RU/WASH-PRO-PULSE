@@ -15,9 +15,8 @@ The main purpose of the device is to integrate modern payment systems with equip
 
 1.  **Pulse Reading:** The device is configured to read pulses with 3.3V logic levels from acquiring terminals like **Vendista** and **Vendotek**. It uses a hardware interrupt on pin `PA0` for this purpose.
 
-2.  **Manual Credit Addition:** It's possible to add credits manually using two buttons:
-    *   Button on `PB12`: adds 10 credits.
-    *   Button on `PB13`: adds 50 credits.
+2.  **Manual Credit Addition:** Manual credit addition is supported via a button:
+    *   Button on `PB6`: adds 5 pulses (credits). The credit value is configured on the controller side.
 
 3.  **Data Exchange:** The device communicates with the main controller (e.g., WASH-PRO) via UART (`PA9`/`PA10`) using a protocol that partially mimics the **"Ephor Online"** protocol. It sends packets with status information and the number of received credits.
 
@@ -38,10 +37,10 @@ This multitasking architecture ensures system responsiveness and reliability.
 
 *   **Microcontroller:** STM32F103C8T6 ("Blue Pill")
 *   **Pin Configuration:** All pin assignments are defined in `include/Constants.hpp`.
-    *   `PULSE_INPUT_PIN`: Input for pulses from the acquiring terminal.
-    *   `BUTTON_10_PIN`, `BUTTON_50_PIN`: Inputs for manual credit buttons.
-    *   `UART_TX_PIN`, `UART_RX_PIN`: UART for communication with the main controller.
-    *   `LED_HEARTBEAT_PIN`, `LED_STATUS_PIN`: Outputs for LED indication.
+    *   `PULSE_INPUT_PIN` (PA0): Input for pulses from the acquiring terminal.
+    *   `BUTTON_10_PIN` (PB6): Input for manual credit button (adds 5 pulses).
+    *   `UART_TX_PIN` (PA10), `UART_RX_PIN` (PA9): UART for communication with the main controller.
+    *   `LED_HEARTBEAT_PIN` (PB15), `LED_STATUS_PIN` (PB14): Outputs for LED indication.
 
 ## Potential Applications
 
