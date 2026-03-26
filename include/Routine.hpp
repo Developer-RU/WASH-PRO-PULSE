@@ -23,7 +23,14 @@ namespace Routine
      * - Запуск таймера стартовой задержки (3 сек)
      */
     static void init(void);
-    
+
+    /**
+     * @brief 
+     * 
+     * @param is_retry 
+     */
+    static void send_poll_packet(bool is_retry);
+
     /**
      * @brief Основной цикл обработки связи.
      * 
