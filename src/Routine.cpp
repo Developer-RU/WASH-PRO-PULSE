@@ -6,6 +6,7 @@
  * @see https://github.com/Developer-RU/WASH-PRO-PULSE
  */
 #include "Routine.hpp"
+#include "Pulse.hpp"
 
 // Глобальные переменные из других модулей
 extern volatile uint8_t credit_count;       ///< Счётчик кредитов (импульсы + кнопка)
@@ -172,6 +173,29 @@ namespace Routine
         // Проверка и ответ
         if (rx_buffer[rx_bytes - 1] == crc.get())
         {
+            uint16_t pos = 3;
+
+            while (pos + 1 < rx_data_length + 3)
+            {
+                uint8_t type = rx_buffer[pos];
+                uint8_t length = rx_buffer[pos + 1];
+                uint16_t value_pos = pos + 2;
+
+                if (value_pos + length > rx_data_length + 3)
+                {
+                    break;
+                }
+
+                if (type == Protocol::CashCredit && length > 0 && length <= sizeof(uint32_t))
+                {
+                    uint32_t cash_pulses = 0;
+                    memcpy(&cash_pulses, &rx_buffer[value_pos], length);
+                    Pulse::queue_cash_output_pulses(cash_pulses);
+                }
+
+                pos = value_pos + length;
+            }
+
             Serial.write(Protocol::Ack);  // CRC верен
             reset_sending_state();        // получен корректный пакет – связь есть
         }

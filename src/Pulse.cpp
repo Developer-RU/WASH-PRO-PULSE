@@ -17,6 +17,27 @@ namespace Pulse
     uint32_t pulse_burst_end_time = 0;   ///< Время окончания пачки импульсов
     volatile uint8_t pulse_buffer = 0;   ///< Буфер накопления импульсов в прерывании
     uint32_t last_pulse_time = 0;        ///< Время последнего импульса (для защиты от дребезга)
+    volatile uint32_t cash_output_pending = 0; ///< Очередь выходных импульсов наличных
+    bool cash_output_pause = false;            ///< Текущая фаза: false - LOW, true - пауза HIGH
+    uint32_t cash_output_timer = 0;            ///< Таймер фазы выходного импульса
+
+    static void set_cash_outputs(uint8_t level)
+    {
+        digitalWrite(CASH_OUTPUT_1_PIN, level);
+        digitalWrite(CASH_OUTPUT_2_PIN, level);
+    }
+
+    void queue_cash_output_pulses(uint32_t count)
+    {
+        if (count == 0)
+        {
+            return;
+        }
+
+        noInterrupts();
+        cash_output_pending += count;
+        interrupts();
+    }
 
     /**
      * @brief Прерывание по входу импульсов (PA0).
@@ -64,6 +85,10 @@ namespace Pulse
     {
         pinMode(PA0, INPUT_FLOATING);
         attachInterrupt(PA0, pulse_isr, FALLING);
+
+        pinMode(CASH_OUTPUT_1_PIN, OUTPUT);
+        pinMode(CASH_OUTPUT_2_PIN, OUTPUT);
+        set_cash_outputs(LOW);
     }
 
     /**
@@ -85,7 +110,41 @@ namespace Pulse
             interrupts();                   // Разрешение прерываний
         }
 
-        vTaskDelay(PULSE_TASK_INTERVAL_MS);
+        if (cash_output_pending > 0)
+        {
+            uint32_t now = millis();
+
+            if (cash_output_timer == 0)
+            {
+                cash_output_pause = false;
+                set_cash_outputs(LOW);
+                cash_output_timer = now;
+            }
+            else if (!cash_output_pause && now - cash_output_timer >= CASH_OUTPUT_PULSE_MS)
+            {
+                cash_output_pause = true;
+                set_cash_outputs(HIGH);
+                cash_output_timer = now;
+            }
+            else if (cash_output_pause && now - cash_output_timer >= CASH_OUTPUT_PAUSE_MS)
+            {
+                noInterrupts();
+                cash_output_pending--;
+                interrupts();
+
+                cash_output_pause = false;
+                set_cash_outputs(LOW);
+                cash_output_timer = cash_output_pending > 0 ? now : 0;
+            }
+        }
+        else if (cash_output_timer != 0)
+        {
+            cash_output_pause = false;
+            cash_output_timer = 0;
+            set_cash_outputs(LOW);
+        }
+
+        vTaskDelay(cash_output_pending > 0 ? 1 : PULSE_TASK_INTERVAL_MS);
     }
 
     /**

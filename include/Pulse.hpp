@@ -12,6 +12,12 @@
 namespace Pulse
 {
     /**
+     * @brief Добавить наличные импульсы в очередь эмуляции на PA1/PA2.
+     * @param count количество импульсов
+     */
+    void queue_cash_output_pulses(uint32_t count);
+
+    /**
      * @brief Инициализация входа импульсов.
      * 
      * Настраивает PA0 как INPUT_FLOATING с прерыванием по спадающему фронту.

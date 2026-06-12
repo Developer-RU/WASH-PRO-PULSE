@@ -20,6 +20,8 @@ const uint32_t PACKET_RETRY_TIMEOUT_MS = 5000;    ///< Максимальное 
 // --- Задача Pulse (подсчёт импульсов) ---
 const uint32_t PULSE_BURST_TIMEOUT_MS = 100;      ///< Таймаут окончания пачки импульсов (100 мс без импульсов).
 const uint32_t PULSE_TASK_INTERVAL_MS = 100;      ///< Интервал опроса задачи подсчёта импульсов.
+const uint32_t CASH_OUTPUT_PULSE_MS = 50;         ///< Длительность низкого уровня выходного импульса наличных.
+const uint32_t CASH_OUTPUT_PAUSE_MS = 50;         ///< Пауза между выходными импульсами наличных.
 
 // --- Задача Button (обработка кнопки) ---
 const uint32_t BUTTON_DEBOUNCE_DELAY_MS = 10;     ///< Задержка антидребезга кнопки.
@@ -50,6 +52,8 @@ const auto PULSE_INPUT_PIN = PA0;                 ///< Вход импульсо
 const auto BUTTON_10_PIN = PB6;                   ///< Кнопка ручного добавления кредитов.
 
 // --- Выходы (Outputs) ---
+const auto CASH_OUTPUT_1_PIN = PA1;               ///< Выход PA1 для эмуляции наличных импульсов.
+const auto CASH_OUTPUT_2_PIN = PA2;               ///< Выход PA2 для эмуляции наличных импульсов.
 const auto LED_HEARTBEAT_PIN = PB15;              ///< LED 1: индикатор обмена данными (мигает при отправке кредитов).
 const auto LED_STATUS_PIN = PB14;                 ///< LED 2: индикатор состояния устройства (мигает в режиме готовности).
 

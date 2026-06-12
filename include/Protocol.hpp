@@ -30,6 +30,7 @@ namespace Protocol
     {
         Operation         = 0x01,  ///< Тип операции
         DeviceState       = 0x08,  ///< Состояние устройства
+        CashCredit        = 0x0A,  ///< Наличные кредиты от мастер-контроллера
         CashlessCredit    = 0x0F,  ///< Безналичные кредиты (оригинальное имя)
     };
 
